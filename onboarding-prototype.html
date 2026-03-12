@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardião — Protótipo de Onboarding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <style>
+    /* ── NOFEX — place font files in /fonts/ ── */
+    @font-face {
+      font-family: 'NOFEX';
+      src: url('fonts/NOFEX-Bold.woff2') format('woff2'),
+           url('fonts/NOFEX-Bold.woff')  format('woff'),
+           url('fonts/NOFEX-Bold.otf')   format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'NOFEX';
+      src: url('fonts/NOFEX-ExtraBold.woff2') format('woff2'),
+           url('fonts/NOFEX-ExtraBold.woff')  format('woff'),
+           url('fonts/NOFEX-ExtraBold.otf')   format('opentype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* ── Guardião Brand Tokens ── */
+      --navy:       #101B3B;   /* deep navy */
+      --navy-mid:   #26428B;   /* royal blue */
+      --navy-light: #516AC7;   /* periwinkle */
+      --gold:       #E3AF64;   /* warm gold */
+      --cream:      #FDEDD3;   /* brand cream */
+      --light:      #F8F6F4;   /* warm off-white */
+
+      /* ── Semantic surfaces ── */
+      --bg-page:    #EDE6D9;
+      --surface:    #FFFFFF;
+      --surface-2:  #F8F5F0;
+      --surface-3:  #F1EBE2;
+      --border:     rgba(16,27,59,.09);
+      --border-2:   rgba(16,27,59,.16);
+
+      /* ── Primary (brand navy replaces generic blue) ── */
+      --blue:       #26428B;
+      --blue-mid:   #101B3B;
+      --blue-light: rgba(38,66,139,.08);
+      --blue-pale:  #F0ECDF;
+
+      /* ── Status ── */
+      --green:      #0BA360;
+      --green-pale: #E8F7F0;
+      --amber:      #E3AF64;   /* gold IS the amber */
+      --amber-pale: #FDF5E0;
+      --red:        #C93840;
+
+      /* ── Text hierarchy (navy-based) ── */
+      --text-1:     #101B3B;
+      --text-2:     #2E4475;
+      --text-3:     #7A8FAD;
+
+      /* ── Shadows ── */
+      --sh-xs: 0 1px 2px rgba(16,27,59,.05);
+      --sh-sm: 0 2px 10px rgba(16,27,59,.07), 0 0 1px rgba(16,27,59,.04);
+      --sh-md: 0 8px 28px rgba(16,27,59,.09), 0 1px 4px rgba(16,27,59,.04);
+      --sh-lg: 0 24px 64px rgba(16,27,59,.13), 0 4px 16px rgba(16,27,59,.05);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: radial-gradient(ellipse at 40% 15%, #D4C9B4 0%, #DDD4C4 55%, #C9C0AF 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── Prototype label ── */
+    .proto-label {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(13,23,36,.38);
+      z-index: 200;
+      white-space: nowrap;
+    }
+
+    /* ── Phone shell ── */
+    .phone {
+      position: relative;
+      z-index: 10;
+      width: 375px;
+      height: 812px;
+      background: #F7F9FC;
+      border-radius: 50px;
+      border: 1.5px solid rgba(0,0,0,.10);
+      box-shadow:
+        0 0 0 7px #C8BEAA,
+        0 0 0 8.5px rgba(0,0,0,.08),
+        0 50px 100px rgba(16,27,59,.30),
+        0 0 140px rgba(227,175,100,.10);
+      overflow: hidden;
+    }
+
+    /* Dynamic Island */
+    .island {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 34px;
+      background: #101828;
+      border-radius: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .island-cam { width: 12px; height: 12px; background: #1E2A3A; border-radius: 50%; border: 1.5px solid #283345; }
+    .island-bar { width: 46px; height: 4px; background: #1E2A3A; border-radius: 3px; }
+
+    /* Status bar */
+    .statusbar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 22px 8px;
+      z-index: 50;
+      color: var(--text-1);
+    }
+    .st-time { font-size: 15px; font-weight: 700; }
+    .st-icons { display: flex; gap: 5px; align-items: center; }
+
+    /* ── Screen container ── */
+    .phone-screen { width: 100%; height: 100%; position: relative; overflow: hidden; }
+
+    /* ── Individual screens ── */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 24px 32px;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity .36s cubic-bezier(.4,0,.2,1), transform .36s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+      overflow-y: auto;
+      scrollbar-width: none;
+      background: var(--surface);
+    }
+    .screen::-webkit-scrollbar { display: none; }
+    .screen.active  { opacity: 1; transform: translateX(0);    pointer-events: all; }
+    .screen.exit    { opacity: 0; transform: translateX(-40px); pointer-events: none; }
+
+    /* ── Shared UI ── */
+    .row-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      min-height: 40px;
+      flex-shrink: 0;
+    }
+    .btn-back {
+      width: 44px; height: 44px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-2);
+      transition: .15s;
+      flex-shrink: 0;
+    }
+    .btn-back:hover { background: var(--surface-3); color: var(--text-1); }
+    .btn-back:active { transform: scale(.95); }
+
+    .step-label {
+      flex: 1;
+      text-align: right;
+      font-size: 13px;
+      color: var(--text-3);
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* Illustration slot */
+    .illus {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Typography */
+    .t-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    .t-display {
+      font-family: 'NOFEX', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-1);
+      line-height: 1.15;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+      letter-spacing: -.025em;
+    }
+    .t-body {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text-2);
+      flex: 1;
+    }
+    .t-body strong { color: var(--text-1); font-weight: 600; }
+
+    /* Buttons */
+    .btn-blue {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; height: 58px;
+      background: linear-gradient(145deg, #26428B 0%, #101B3B 100%);
+      color: #FFFFFF;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; font-weight: 700;
+      border: none; border-radius: 16px;
+      cursor: pointer;
+      transition: .15s;
+      box-shadow: 0 4px 20px rgba(16,27,59,.32), 0 1px 0 rgba(255,255,255,.08) inset;
+      flex-shrink: 0;
+      letter-spacing: -.01em;
+    }
+    .btn-blue:hover  { background: linear-gradient(145deg, #1A3070 0%, #0B1228 100%); box-shadow: 0 8px 28px rgba(16,27,59,.40); }
+    .btn-blue:active { transform: scale(.98); }
+
+    .btn-outline {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; height: 52px;
+      background: var(--surface);
+      border: 1.5px solid var(--border-2);
+      border-radius: 14px;
+      color: var(--text-2);
+      font-size: 15px; font-weight: 600;
+      cursor: pointer;
+      transition: .15s;
+      margin-top: 10px;
+      flex-shrink: 0;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-outline:hover { background: var(--surface-2); border-color: var(--navy-mid); color: var(--navy-mid); }
+    .btn-outline:active { transform: scale(.98); }
+
+    .btn-link {
+      background: none; border: none;
+      color: var(--text-3);
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; text-align: center;
+      margin-top: 12px;
+      flex-shrink: 0;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(131,152,180,.35);
+    }
+    .btn-link:hover { color: var(--text-2); }
+
+    /* Progress bar */
+    .progress-bar {
+      width: 100%; height: 4px;
+      background: var(--surface-3);
+      border-radius: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: 28px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--navy-mid) 100%);
+      border-radius: 4px;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ══════════════════════════════════════
+       SCREEN 0 – SPLASH
+    ══════════════════════════════════════ */
+    .screen-splash {
+      background: linear-gradient(160deg, #0D1630 0%, #1A2E5E 60%, #101B3B 100%);
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .splash-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+      animation: fadeUp .9s ease .3s both;
+    }
+    .splash-shield-wrap {
+      position: relative;
+      width: 108px; height: 108px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .splash-glow {
+      position: absolute; inset: -20px;
+      background: radial-gradient(circle, rgba(255,255,255,.18) 0%, transparent 70%);
+      animation: glow 3s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .splash-glow, .splash-shield svg, .pulse { animation: none !important; }
+    }
+    @keyframes glow { 0%,100%{opacity:.4} 50%{opacity:.9} }
+    .splash-title {
+      font-family: 'NOFEX', sans-serif;
+      font-size: 48px; font-weight: 800;
+      color: var(--cream); letter-spacing: -.03em; line-height: 1;
+    }
+    .splash-sub {
+      font-size: 12px; font-weight: 600;
+      color: var(--gold); letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ══════════════════════════════════════
+       SCREEN 1 – WELCOME
+    ══════════════════════════════════════ */
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--blue-light);
+      border: 1px solid rgba(56,100,200,.18);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 11px; font-weight: 700;
+      color: var(--blue);
+      letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 18px; flex-shrink: 0;
+      width: fit-content;
+    }
+
+    /* ══════════════════════════════════════
+       SCREEN 2 – CAROUSEL
+    ══════════════════════════════════════ */
+    .carousel-wrap {
+      position: absolute; inset: 0;
+      background: var(--surface);
+      display: flex; flex-direction: column;
+      padding-top: 54px;
+    }
+    .carousel-header {
+      display: flex; align-items: center;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+    .carousel-slides-wrap {
+      flex: 1; overflow: hidden;
+      position: relative;
+    }
+    .carousel-track {
+      display: flex;
+      height: 100%;
+      transition: transform .38s cubic-bezier(.4,0,.2,1);
+    }
+    .c-slide {
+      min-width: 100%; height: 100%;
+      padding: 24px 24px 18px;
+      display: flex; flex-direction: column;
+    }
+    .c-mockup-card {
+      width: 100%; height: 208px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px; flex-shrink: 0;
+    }
+    .c-mockup-card svg { display: block; width: 100%; height: 100%; }
+    .c-eyebrow {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 8px; flex-shrink: 0;
+    }
+    .c-title {
+      font-family: 'NOFEX', sans-serif;
+      font-size: 26px; font-weight: 800;
+      color: var(--text-1); line-height: 1.12;
+      margin-bottom: 14px; flex-shrink: 0;
+      letter-spacing: -.025em;
+    }
+    .c-body {
+      font-size: 16px; line-height: 1.65;
+      color: var(--text-2); flex: 1;
+    }
+    .c-body strong { color: var(--text-1); font-weight: 600; }
+
+    /* Dots */
+    .carousel-footer {
+      padding: 0 24px 28px;
+      display: flex; flex-direction: column;
+      gap: 16px; flex-shrink: 0;
+    }
+    .dots {
+      display: flex; justify-content: center; gap: 7px; align-items: center;
+    }
+    .dot {
+      width: 7px; height: 7px; border-radius: 4px;
+      background: var(--border-2);
+      transition: .3s;
+    }
+    .dot.on { background: var(--gold); width: 22px; }
+
+    /* ══════════════════════════════════════
+       SCREEN 3 – TRUSTED CONTACT
+    ══════════════════════════════════════ */
+    .form-group { margin-bottom: 14px; flex-shrink: 0; }
+    .form-label {
+      display: block;
+      font-size: 12px; font-weight: 700;
+      color: var(--text-3);
+      letter-spacing: .09em; text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+    .form-input {
+      width: 100%; height: 54px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 0 16px;
+      font-size: 16px; font-family: 'DM Sans', sans-serif;
+      color: var(--text-1);
+      outline: none;
+      transition: .18s;
+    }
+    .form-input::placeholder { color: var(--text-3); }
+    .form-input:focus {
+      border-color: var(--navy-mid);
+      background: var(--surface);
+      box-shadow: 0 0 0 4px rgba(38,66,139,.10);
+    }
+    .hint-box {
+      display: flex; gap: 10px; align-items: flex-start;
+      background: rgba(38,66,139,.07);
+      border: 1px solid rgba(38,66,139,.14);
+      border-radius: 12px;
+      padding: 13px 14px;
+      margin: 14px 0 20px;
+      flex-shrink: 0;
+    }
+    .hint-box .hint-icon {
+      width: 18px; height: 18px; flex-shrink: 0; color: var(--blue); margin-top: 1px;
+    }
+    .hint-box span { font-size: 14px; color: var(--text-2); line-height: 1.55; }
+
+    /* ══════════════════════════════════════
+       SCREENS 4–6 – PERMISSIONS
+    ══════════════════════════════════════ */
+    .perm-icon-ring {
+      width: 88px; height: 88px;
+      border-radius: 24px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px; flex-shrink: 0;
+    }
+    .trust-list {
+      list-style: none;
+      display: flex; flex-direction: column;
+      gap: 9px; margin-bottom: auto; flex-shrink: 0;
+      padding-bottom: 24px;
+    }
+    .trust-list li {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 15px; color: var(--text-2);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 13px 15px;
+    }
+    .tcheck {
+      width: 24px; height: 24px;
+      background: var(--green-pale);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--green);
+    }
+
+    /* OS permission sheet */
+    .overlay {
+      position: absolute; inset: 0;
+      background: rgba(13,23,36,.40);
+      z-index: 150; opacity: 0; pointer-events: none;
+      transition: opacity .26s;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+    .os-sheet {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      border-top: 1px solid var(--border);
+      padding: 22px 20px 40px;
+      z-index: 200;
+      transform: translateY(100%);
+      transition: transform .36s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 -12px 40px rgba(13,23,36,.10);
+    }
+    .os-sheet.show { transform: translateY(0); }
+    .os-handle {
+      width: 36px; height: 4px;
+      background: var(--border-2);
+      border-radius: 2px;
+      margin: 0 auto 18px;
+    }
+    .os-app-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(145deg, var(--navy-mid) 0%, var(--navy) 100%);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+      box-shadow: 0 4px 16px rgba(16,27,59,.30);
+    }
+    .os-title {
+      font-size: 16px; font-weight: 700;
+      color: var(--text-1); text-align: center; margin-bottom: 7px;
+    }
+    .os-body {
+      font-size: 14px; color: var(--text-2);
+      text-align: center; line-height: 1.55; margin-bottom: 22px;
+    }
+    .os-btn {
+      width: 100%; height: 52px;
+      border-radius: 14px; cursor: pointer;
+      font-size: 16px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      border: none; transition: .15s;
+      margin-top: 9px;
+    }
+    .os-btn:active { transform: scale(.98); }
+    .os-btn-allow { background: linear-gradient(145deg, #26428B 0%, #101B3B 100%); color: #fff; box-shadow: 0 3px 12px rgba(16,27,59,.28); }
+    .os-btn-allow:hover { background: linear-gradient(145deg, #1A3070 0%, #0B1228 100%); }
+    .os-btn-deny { background: var(--surface-2); color: var(--text-2); border: 1.5px solid var(--border); }
+    .os-btn-deny:hover { background: var(--surface-3); }
+
+    /* ══════════════════════════════════════
+       SCREEN 7 – DONE
+    ══════════════════════════════════════ */
+    .screen-done {
+      background: linear-gradient(175deg, #101B3B 0%, #1E3368 55%, #0D1630 100%);
+      align-items: center;
+      text-align: center;
+    }
+    .done-circle {
+      width: 88px; height: 88px;
+      background: rgba(227,175,100,.18);
+      border: 2px solid rgba(227,175,100,.40);
+      border-radius: 26px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 16px auto 22px;
+      flex-shrink: 0;
+      animation: bounceIn .55s cubic-bezier(.34,1.56,.64,1) .3s both;
+    }
+    @keyframes bounceIn { from{transform:scale(.35) rotate(-8deg);opacity:0} to{transform:scale(1) rotate(0);opacity:1} }
+    .done-title {
+      font-family: 'NOFEX', sans-serif;
+      font-size: 30px; font-weight: 800;
+      color: var(--cream); margin-bottom: 10px; flex-shrink: 0;
+      letter-spacing: -.03em;
+      animation: fadeUp .5s ease .55s both;
+    }
+    .done-sub {
+      font-size: 15px; color: rgba(253,237,211,.72);
+      line-height: 1.6; margin-bottom: 28px; flex-shrink: 0;
+      max-width: 280px; margin-left: auto; margin-right: auto;
+      animation: fadeUp .5s ease .65s both;
+    }
+    .done-cards {
+      width: 100%; display: flex; flex-direction: column;
+      gap: 9px; margin-bottom: 26px; flex-shrink: 0;
+      animation: fadeUp .5s ease .75s both;
+    }
+    .done-card {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      padding: 13px 15px;
+      text-align: left;
+    }
+    .done-card-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: rgba(255,255,255,.12) !important;
+    }
+    .done-card-info { flex: 1; }
+    .done-card-name { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.92); margin-bottom: 2px; }
+    .done-card-desc { font-size: 13px; color: rgba(255,255,255,.52); font-weight: 400; }
+    .done-card-status {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 700; color: #4DD8A0;
+      white-space: nowrap;
+    }
+    .pulse {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      animation: blink 2.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+    /* Confetti */
+    .confetti-wrap { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .cp {
+      position: absolute; top: -10px; border-radius: 50%;
+      animation: fall linear forwards;
+    }
+    @keyframes fall { from{transform:translateY(-10px) rotate(0)} to{transform:translateY(900px) rotate(720deg);opacity:0} }
+
+    /* ── Progress dots at bottom ── */
+    .proto-dots {
+      position: fixed; bottom: 22px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 200;
+    }
+    .pdot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(13,23,36,.15);
+      transition: .3s;
+    }
+    .pdot.on { background: rgba(13,23,36,.42); transform: scale(1.5); }
+  </style>
+</head>
+<body>
+
+
+<div class="phone">
+  <!-- Dynamic Island -->
+  <div class="island">
+    <div class="island-bar"></div>
+    <div class="island-cam"></div>
+  </div>
+
+  <!-- Status bar -->
+  <div class="statusbar">
+    <span class="st-time">9:41</span>
+    <div class="st-icons">
+      <!-- Signal -->
+      <svg width="17" height="12" fill="none" viewBox="0 0 17 12">
+        <rect x="0" y="5"  width="3" height="7" rx="1" fill="currentColor" opacity=".3"/>
+        <rect x="4.5" y="3" width="3" height="9" rx="1" fill="currentColor" opacity=".55"/>
+        <rect x="9"   y="1" width="3" height="11" rx="1" fill="currentColor"/>
+      </svg>
+      <!-- Wifi -->
+      <svg width="16" height="12" fill="none" viewBox="0 0 16 12">
+        <path d="M8 9.5l1.5 2h-3l1.5-2z" fill="currentColor"/>
+        <path d="M5.2 7.5C6 6.8 7 6.4 8 6.4s2 .4 2.8 1.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M2.5 5C4 3.5 5.9 2.6 8 2.6s4 .9 5.5 2.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55"/>
+      </svg>
+      <!-- Battery -->
+      <svg width="25" height="12" fill="none" viewBox="0 0 25 12">
+        <rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity=".3"/>
+        <rect x="2" y="2"  width="15" height="8" rx="2" fill="currentColor"/>
+        <path d="M23 4v4c.8-.5.8-3.5 0-4z" fill="currentColor" opacity=".3"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- All screens -->
+  <div class="phone-screen" id="phoneScreen">
+
+    <!-- ══ S0: SPLASH ══ -->
+    <div class="screen screen-splash active" data-s="0">
+      <div class="splash-wrap">
+        <div class="splash-shield-wrap">
+          <div class="splash-glow"></div>
+          <svg width="96" height="96" viewBox="0 0 96 96" fill="none">
+            <path d="M48 6L15 20V46C15 65 29 82 48 90C67 82 81 65 81 46V20L48 6Z"
+              fill="rgba(255,255,255,.22)" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+            <path d="M34 48l10 10 18-18" stroke="white" stroke-width="3.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="splash-title">Guardião</div>
+        <div class="splash-sub">O seu protetor pessoal</div>
+      </div>
+    </div>
+
+    <!-- ══ S1: WELCOME ══ -->
+    <div class="screen" data-s="1">
+      <div class="row-header"></div>
+
+
+
+      <!-- Illustration -->
+      <div class="illus" style="height:190px; margin-bottom:8px;">
+        <svg width="220" height="180" viewBox="0 0 220 180" fill="none">
+          <!-- Shadow -->
+          <ellipse cx="110" cy="160" rx="78" ry="12" fill="rgba(16,27,59,.06)"/>
+          <!-- Shield -->
+          <path d="M110 18L72 33V64C72 85 87 104 110 112C133 104 148 85 148 64V33L110 18Z"
+            fill="rgba(38,66,139,.09)" stroke="rgba(38,66,139,.52)" stroke-width="1.5"/>
+          <path d="M97 64l10 10 18-18" stroke="#26428B" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Person silhouette -->
+          <circle cx="110" cy="92" r="22" fill="rgba(16,27,59,.05)" stroke="rgba(38,66,139,.16)" stroke-width="1"/>
+          <circle cx="103" cy="89" r="2.8" fill="rgba(38,66,139,.32)"/>
+          <circle cx="117" cy="89" r="2.8" fill="rgba(38,66,139,.32)"/>
+          <path d="M103 99 Q110 104 117 99" stroke="rgba(38,66,139,.48)"
+            stroke-width="2" stroke-linecap="round" fill="none"/>
+          <!-- Orbiting signal dots — navy + gold accent -->
+          <circle cx="48" cy="50" r="6" fill="rgba(38,66,139,.22)"/>
+          <circle cx="170" cy="42" r="5" fill="rgba(227,175,100,.55)"/>
+          <circle cx="42" cy="102" r="3.5" fill="rgba(38,66,139,.16)"/>
+          <circle cx="175" cy="88" r="3" fill="rgba(11,163,96,.20)"/>
+          <circle cx="58" cy="140" r="2.5" fill="rgba(227,175,100,.35)"/>
+          <circle cx="162" cy="126" r="4.5" fill="rgba(227,175,100,.42)"/>
+          <!-- Connection lines -->
+          <line x1="54" y1="56" x2="84" y2="50" stroke="rgba(38,66,139,.12)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="165" y1="48" x2="140" y2="54" stroke="rgba(227,175,100,.18)" stroke-width="1" stroke-dasharray="3 3"/>
+        </svg>
+      </div>
+
+      <div class="t-display">Olá! Bem-vindo ao Guardião</div>
+      <div class="t-body">
+        Merece usar o telemóvel com tranquilidade.<br><br>
+        O Guardião protege-o para que <strong>burlões não cheguem até si</strong> — em chamadas e mensagens.
+      </div>
+
+      <button class="btn-blue" style="margin-top:auto;" onclick="go(2)">
+        Começar
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M7 5l4 4-4 4" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ══ S2: CAROUSEL ══ -->
+    <div class="screen" data-s="2" style="padding:0;">
+      <div class="carousel-wrap">
+        <div class="carousel-header">
+          <button class="btn-back" onclick="go(1)" aria-label="Voltar">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="carousel-slides-wrap">
+          <div class="carousel-track" id="ctrack">
+
+            <!-- Slide 0: Calls -->
+            <div class="c-slide">
+              <!-- MOCKUP: Blocked Call -->
+              <div class="c-mockup-card" style="background:#E4EAF5;">
+                <svg viewBox="0 0 327 208" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="sg0" x1="163" y1="9" x2="163" y2="199" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#1C2F52"/>
+                      <stop offset="100%" stop-color="#0F1E36"/>
+                    </linearGradient>
+                    <clipPath id="sp0">
+                      <rect x="112" y="9" width="103" height="190" rx="15"/>
+                    </clipPath>
+                  </defs>
+                  <!-- Card bg decoration -->
+                  <circle cx="58" cy="48" r="56" fill="rgba(56,100,200,.07)"/>
+                  <circle cx="282" cy="172" r="50" fill="rgba(56,100,200,.06)"/>
+                  <!-- Phone shell -->
+                  <rect x="108" y="4" width="111" height="200" rx="19" fill="#0D1724"/>
+                  <!-- Screen bg -->
+                  <rect x="112" y="8" width="103" height="192" rx="16" fill="url(#sg0)"/>
+                  <!-- Screen content clipped -->
+                  <g clip-path="url(#sp0)">
+                    <!-- Status bar time -->
+                    <text x="120" y="23" font-family="'DM Sans',sans-serif" font-size="7" font-weight="600" fill="rgba(255,255,255,.6)">09:41</text>
+                    <!-- Battery bar -->
+                    <rect x="197" y="17" width="13" height="6" rx="2" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.4)" stroke-width=".8"/>
+                    <rect x="198" y="18" width="9" height="4" rx="1.5" fill="rgba(255,255,255,.5)"/>
+                    <!-- Unknown caller avatar ring -->
+                    <circle cx="163" cy="70" r="23" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.14)" stroke-width="1.2"/>
+                    <!-- Person silhouette -->
+                    <circle cx="163" cy="64" r="9" fill="rgba(255,255,255,.22)"/>
+                    <path d="M148 83c0-8.3 6.7-15 15-15s15 6.7 15 15" fill="rgba(255,255,255,.16)"/>
+                    <!-- BLOQUEADO badge -->
+                    <rect x="134" y="96" width="59" height="15" rx="7.5" fill="#DC2626"/>
+                    <text x="163.5" y="107" font-family="'DM Sans',sans-serif" font-size="6.5" font-weight="700" fill="white" text-anchor="middle" letter-spacing=".8">BLOQUEADO</text>
+                    <!-- Phone number -->
+                    <text x="163.5" y="122" font-family="'DM Sans',sans-serif" font-size="8" fill="rgba(255,255,255,.48)" text-anchor="middle">+351 962 100 200</text>
+                    <!-- Label -->
+                    <text x="163.5" y="136" font-family="'DM Sans',sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,.84)" text-anchor="middle">Número Suspeito</text>
+                    <!-- Divider -->
+                    <line x1="126" y1="148" x2="201" y2="148" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+                    <!-- Decline button -->
+                    <circle cx="144" cy="173" r="16" fill="#DC2626"/>
+                    <path d="M139 168l10 10M149 168l-10 10" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                    <!-- Answer button (muted) -->
+                    <circle cx="183" cy="173" r="16" fill="rgba(11,163,96,.2)"/>
+                    <path d="M179 169.5c0-.7.6-1.3 1.3-1.3h1.6a1.1 1.1 0 011 .75l.75 2.7a1.1 1.1 0 01-.27 1.04l-1.24 1.24a8.1 8.1 0 003.66 3.66l1.24-1.24a1.1 1.1 0 011.04-.27l2.7.75a1.1 1.1 0 01.75 1v1.6c0 .85-.76 1.56-1.6 1.52-8.4-.45-11.4-3.45-11-11.4z" fill="rgba(255,255,255,.28)"/>
+                  </g>
+                  <!-- Dynamic Island (renders over screen) -->
+                  <rect x="137" y="11" width="53" height="13" rx="6.5" fill="#0D1724"/>
+                </svg>
+              </div>
+              <div class="c-eyebrow" style="color:var(--navy-mid);">Proteção ativa</div>
+              <div class="c-title">Chamadas Protegidas</div>
+              <div class="c-body">
+                Quando alguém ligar, o Guardião verifica se é uma pessoa de confiança ou um burlão.<br><br>
+                <strong>Se for suspeito, bloqueamos antes de o telemóvel tocar.</strong>
+              </div>
+            </div>
+
+            <!-- Slide 1: Messages -->
+            <div class="c-slide">
+              <!-- MOCKUP: Safe Messages -->
+              <div class="c-mockup-card" style="background:#FDF5E0;">
+                <svg viewBox="0 0 327 208" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <defs>
+                    <clipPath id="sp1">
+                      <rect x="112" y="8" width="103" height="192" rx="16"/>
+                    </clipPath>
+                  </defs>
+                  <!-- Card bg decoration -->
+                  <circle cx="58" cy="42" r="56" fill="rgba(217,119,6,.06)"/>
+                  <circle cx="284" cy="175" r="52" fill="rgba(217,119,6,.07)"/>
+                  <!-- Phone shell -->
+                  <rect x="108" y="4" width="111" height="200" rx="19" fill="#0D1724"/>
+                  <!-- Screen bg (white messages app) -->
+                  <rect x="112" y="8" width="103" height="192" rx="16" fill="#F5F6F8"/>
+                  <!-- Screen content clipped -->
+                  <g clip-path="url(#sp1)">
+                    <!-- App header -->
+                    <rect x="112" y="8" width="103" height="24" fill="#EEF2F9"/>
+                    <path d="M121 21l-4 3.5 4 3.5" stroke="#26428B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="163.5" y="23" font-family="'DM Sans',sans-serif" font-size="8.5" font-weight="600" fill="#0D1724" text-anchor="middle">SMS</text>
+                    <!-- Amber warning strip -->
+                    <rect x="112" y="32" width="103" height="15" fill="#FEF3C7"/>
+                    <path d="M119 41.5l2.4-4.2 2.4 4.2z" fill="#D97706"/>
+                    <text x="129" y="42" font-family="'DM Sans',sans-serif" font-size="6.5" font-weight="600" fill="#92400E">Mensagem suspeita detetada</text>
+                    <!-- Incoming bubble with red tint -->
+                    <rect x="115" y="53" width="74" height="52" rx="10" fill="#FFF0F0" stroke="rgba(220,38,38,.22)" stroke-width="1"/>
+                    <!-- Faded text lines (redacted content) -->
+                    <rect x="121" y="62" width="52" height="5" rx="2.5" fill="rgba(55,65,81,.18)"/>
+                    <rect x="121" y="72" width="60" height="5" rx="2.5" fill="rgba(55,65,81,.18)"/>
+                    <rect x="121" y="82" width="42" height="5" rx="2.5" fill="rgba(55,65,81,.18)"/>
+                    <!-- FRAUDE badge overlaid on bubble -->
+                    <rect x="130" y="69" width="44" height="16" rx="5" fill="rgba(220,38,38,.92)"/>
+                    <text x="152" y="80.5" font-family="'DM Sans',sans-serif" font-size="7" font-weight="700" fill="white" text-anchor="middle" letter-spacing=".6">FRAUDE</text>
+                    <!-- Green removed status bar -->
+                    <rect x="115" y="111" width="88" height="14" rx="7" fill="#E8FBF2" stroke="rgba(11,163,96,.28)" stroke-width="1"/>
+                    <text x="159" y="121" font-family="'DM Sans',sans-serif" font-size="6.5" font-weight="600" fill="#0BA360" text-anchor="middle">✓ Removida pelo Guardião</text>
+                    <!-- Placeholder blocked messages below -->
+                    <rect x="115" y="132" width="55" height="8" rx="4" fill="#E2E6ED"/>
+                    <rect x="115" y="145" width="38" height="8" rx="4" fill="#E2E6ED"/>
+                    <!-- Bottom shield bar -->
+                    <rect x="112" y="183" width="103" height="17" fill="#E4EAF5"/>
+                    <path d="M121 191.5l3.5-2v2.8c0 1.5-1.8 2.3-3.5 2.7-1.7-.4-3.5-1.2-3.5-2.7v-2.8z" fill="#26428B"/>
+                    <text x="130" y="194" font-family="'DM Sans',sans-serif" font-size="6.5" font-weight="500" fill="#26428B">Guardião ativo</text>
+                  </g>
+                  <!-- Dynamic Island -->
+                  <rect x="137" y="11" width="53" height="13" rx="6.5" fill="#0D1724"/>
+                </svg>
+              </div>
+              <div class="c-eyebrow" style="color:var(--gold);">Filtragem automática</div>
+              <div class="c-title">Mensagens Seguras</div>
+              <div class="c-body">
+                As SMS e mensagens são verificadas automaticamente antes de chegarem até si.<br><br>
+                <strong>Mensagens fraudulentas são removidas antes de as ler.</strong>
+              </div>
+            </div>
+
+            <!-- Slide 2: Family -->
+            <div class="c-slide">
+              <!-- MOCKUP: Family Alert -->
+              <div class="c-mockup-card" style="background:#E8FBF2;">
+                <svg viewBox="0 0 327 208" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="sg2" x1="163" y1="8" x2="163" y2="200" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stop-color="#2B4F8A"/>
+                      <stop offset="100%" stop-color="#1A3360"/>
+                    </linearGradient>
+                    <clipPath id="sp2">
+                      <rect x="112" y="8" width="103" height="192" rx="16"/>
+                    </clipPath>
+                  </defs>
+                  <!-- Card bg decoration -->
+                  <circle cx="60" cy="50" r="58" fill="rgba(11,163,96,.07)"/>
+                  <circle cx="282" cy="170" r="52" fill="rgba(11,163,96,.06)"/>
+                  <!-- Phone shell -->
+                  <rect x="108" y="4" width="111" height="200" rx="19" fill="#0D1724"/>
+                  <!-- Screen bg (dark blue lock screen) -->
+                  <rect x="112" y="8" width="103" height="192" rx="16" fill="url(#sg2)"/>
+                  <!-- Screen content clipped -->
+                  <g clip-path="url(#sp2)">
+                    <!-- Status bar -->
+                    <text x="120" y="23" font-family="'DM Sans',sans-serif" font-size="7" font-weight="600" fill="rgba(255,255,255,.6)">09:41</text>
+                    <rect x="197" y="17" width="13" height="6" rx="2" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.4)" stroke-width=".8"/>
+                    <rect x="198" y="18" width="9" height="4" rx="1.5" fill="rgba(255,255,255,.5)"/>
+                    <!-- Large time display -->
+                    <text x="163.5" y="63" font-family="'DM Sans',sans-serif" font-size="28" font-weight="300" fill="white" text-anchor="middle">09:41</text>
+                    <!-- Date -->
+                    <text x="163.5" y="76" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(255,255,255,.6)" text-anchor="middle">Terça, 11 de março</text>
+                    <!-- Notification card (white pill) -->
+                    <rect x="114" y="85" width="99" height="62" rx="12" fill="rgba(255,255,255,.93)"/>
+                    <!-- Guardião shield icon -->
+                    <circle cx="129" cy="104" r="10" fill="#26428B"/>
+                    <path d="M129 96.5l5.5 2.8v3.8c0 2.6-2.8 4.4-5.5 5.4-2.7-1-5.5-2.8-5.5-5.4v-3.8z" fill="white"/>
+                    <!-- App name + time -->
+                    <text x="143" y="99" font-family="'DM Sans',sans-serif" font-size="7" font-weight="700" fill="#0D1724">Guardião</text>
+                    <text x="203" y="99" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#8398B4" text-anchor="end">agora</text>
+                    <!-- Message lines -->
+                    <text x="143" y="110" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#3D4F68">Chamada suspeita bloqueada.</text>
+                    <text x="143" y="120" font-family="'DM Sans',sans-serif" font-size="6.5" fill="#3D4F68">Maria (filha) foi avisada.</text>
+                    <!-- Green check badge on notification -->
+                    <circle cx="205" cy="104" r="7" fill="#0BA360"/>
+                    <path d="M202 104l2 2 4-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Divider line -->
+                    <line x1="119" y1="135" x2="208" y2="135" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                    <!-- Family contacts hint -->
+                    <text x="163.5" y="149" font-family="'DM Sans',sans-serif" font-size="6.5" fill="rgba(255,255,255,.62)" text-anchor="middle">Contactos de confiança avisados</text>
+                    <!-- Two family avatar circles -->
+                    <circle cx="150" cy="167" r="11" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+                    <text x="150" y="171" font-family="'DM Sans',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" text-anchor="middle">M</text>
+                    <circle cx="177" cy="167" r="11" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+                    <text x="177" y="171" font-family="'DM Sans',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" text-anchor="middle">J</text>
+                    <!-- Green notif dots -->
+                    <circle cx="158" cy="159" r="3.5" fill="#0BA360" stroke="rgba(26,51,96,.5)" stroke-width="1"/>
+                    <circle cx="185" cy="159" r="3.5" fill="#0BA360" stroke="rgba(26,51,96,.5)" stroke-width="1"/>
+                  </g>
+                  <!-- Dynamic Island -->
+                  <rect x="137" y="11" width="53" height="13" rx="6.5" fill="#0D1724"/>
+                </svg>
+              </div>
+              <div class="c-eyebrow" style="color:var(--green);">Rede de confiança</div>
+              <div class="c-title">Família Informada</div>
+              <div class="c-body">
+                Quando bloqueamos uma burla, avisamos a pessoa da sua confiança.<br><br>
+                <strong>Ficam tranquilos a saber que está protegido.</strong>
+              </div>
+            </div>
+
+          </div><!-- /track -->
+        </div><!-- /slides-wrap -->
+
+        <div class="carousel-footer">
+          <div class="dots">
+            <div class="dot on" id="d0"></div>
+            <div class="dot" id="d1"></div>
+            <div class="dot" id="d2"></div>
+          </div>
+          <button class="btn-blue" id="cBtn" onclick="slideNext()">
+            Próximo
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M7 5l4 4-4 4" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ S3: TRUSTED CONTACT ══ -->
+    <div class="screen" data-s="3">
+      <div class="row-header">
+        <button class="btn-back" onclick="go(2)" aria-label="Voltar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="illus" style="height:76px; justify-content:flex-start; margin-bottom:8px;">
+        <div style="width:72px;height:72px;background:rgba(38,66,139,.08);border:1px solid rgba(38,66,139,.18);border-radius:22px;display:flex;align-items:center;justify-content:center;">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+            <circle cx="18" cy="15" r="7" fill="rgba(56,100,200,.18)" stroke="var(--blue)" stroke-width="1.5"/>
+            <path d="M6 32c0-6.6 5.4-12 12-12s12 5.4 12 12" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="30" cy="13" r="6" fill="var(--green-pale)" stroke="var(--green)" stroke-width="1.5"/>
+            <path d="M27.5 13l2 2 2.5-2.5" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="t-display">Quem deve receber os avisos?</div>
+      <p style="font-size:15px;color:var(--text-2);margin-bottom:18px;flex-shrink:0;line-height:1.55;">
+        Adicione alguém de confiança — um filho, neto ou cuidador.
+      </p>
+
+      <div class="form-group">
+        <label class="form-label" for="contact-name">Nome completo</label>
+        <input class="form-input" id="contact-name" type="text" autocomplete="name" placeholder="Ex: Maria Silva">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="contact-phone">Número de telemóvel</label>
+        <input class="form-input" id="contact-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+351 912 345 678">
+      </div>
+
+      <button class="btn-outline" onclick="">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Procurar nos contactos
+      </button>
+
+      <div class="hint-box">
+        <svg class="hint-icon" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M9 8v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="9" cy="5.5" r=".8" fill="currentColor"/>
+        </svg>
+        <span>Esta pessoa receberá avisos sempre que bloquearmos algo suspeito.</span>
+      </div>
+
+      <button class="btn-blue" style="margin-top:auto;" onclick="go(4)">
+        Confirmar
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M7 5l4 4-4 4" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="btn-link" onclick="go(4)">Fazer isso depois</button>
+    </div>
+
+    <!-- ══ S4: PERMISSION – CALLS ══ -->
+    <div class="screen" data-s="4">
+      <div class="row-header">
+        <button class="btn-back" onclick="go(3)" aria-label="Voltar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="step-label">Passo 1 de 3</span>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill" style="width:33%;"></div></div>
+
+      <div class="perm-icon-ring" style="background:rgba(38,66,139,.08);border:1.5px solid rgba(38,66,139,.18);">
+        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+          <path d="M9 13C9 11.4 10.5 10 12 10h4.5a2.8 2.8 0 012.7 2.1l2 7.2a2.8 2.8 0 01-.6 2.8l-2.9 2.9a21 21 0 009.4 9.4l2.9-2.9a2.8 2.8 0 012.8-.6l7.2 2a2.8 2.8 0 012.1 2.7V39a4 4 0 01-4 4C16.5 43 9 35.5 9 13z"
+            fill="url(#pg1)"/>
+          <defs>
+            <linearGradient id="pg1" x1="9" y1="10" x2="43" y2="43">
+              <stop stop-color="#26428B"/>
+              <stop offset="1" stop-color="#101B3B"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="t-display">Acesso às chamadas</div>
+      <div class="t-body" style="flex:0;margin-bottom:20px;">
+        Para verificar quem está a ligar <strong>antes de o telemóvel tocar</strong>.
+      </div>
+
+      <ul class="trust-list">
+        <li>
+          <div class="tcheck">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2.5 6.5l3 3 5-5" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Não ouvimos as suas conversas
+        </li>
+        <li>
+          <div class="tcheck">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2.5 6.5l3 3 5-5" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Só verificamos o número de quem liga
+        </li>
+      </ul>
+
+      <button class="btn-blue" onclick="showSheet('perm-calls')">
+        Permitir acesso
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M7 5l4 4-4 4" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="overlay" id="ov-perm-calls"></div>
+      <div class="os-sheet" id="sh-perm-calls" role="dialog" aria-modal="true" aria-labelledby="sh-calls-title">
+        <div class="os-handle"></div>
+        <div class="os-app-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2L4 7V16C4 21.5 8.5 26.5 14 28C19.5 26.5 24 21.5 24 16V7L14 2Z"
+              fill="rgba(255,255,255,.35)"/>
+            <path d="M9.5 14l3 3 6-6" stroke="white" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="os-title" id="sh-calls-title">"Guardião" quer aceder às chamadas</div>
+        <div class="os-body">O Guardião vai verificar o número das chamadas para o proteger de burlas.</div>
+        <button class="os-btn os-btn-allow" onclick="grant('perm-calls', 5)">Permitir</button>
+        <button class="os-btn os-btn-deny" onclick="hideSheet('perm-calls')">Não Permitir</button>
+      </div>
+    </div>
+
+    <!-- ══ S5: PERMISSION – MESSAGES ══ -->
+    <div class="screen" data-s="5">
+      <div class="row-header">
+        <button class="btn-back" onclick="go(4)" aria-label="Voltar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="step-label">Passo 2 de 3</span>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill" style="width:66%;"></div></div>
+
+      <div class="perm-icon-ring" style="background:var(--amber-pale);border:1.5px solid rgba(217,119,6,.18);">
+        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+          <path d="M8 14C8 12 9.8 10 12 10h22c2.2 0 4 2 4 4v18c0 2-1.8 4-4 4H27l-8 6v-6H12c-2.2 0-4-2-4-4V14z"
+            fill="url(#pg2)"/>
+          <path d="M15 20h16M15 26h10" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+          <defs>
+            <linearGradient id="pg2" x1="8" y1="10" x2="44" y2="44">
+              <stop stop-color="#D97706"/>
+              <stop offset="1" stop-color="#B45309"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="t-display">Acesso às mensagens</div>
+      <div class="t-body" style="flex:0;margin-bottom:20px;">
+        Para verificar SMS antes de chegarem até si e <strong>remover burlas automaticamente</strong>.
+      </div>
+
+      <ul class="trust-list">
+        <li>
+          <div class="tcheck">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2.5 6.5l3 3 5-5" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Não lemos as suas conversas pessoais
+        </li>
+        <li>
+          <div class="tcheck">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2.5 6.5l3 3 5-5" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Só analisamos mensagens desconhecidas
+        </li>
+      </ul>
+
+      <button class="btn-blue" onclick="showSheet('perm-msg')">
+        Permitir acesso
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M7 5l4 4-4 4" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="overlay" id="ov-perm-msg"></div>
+      <div class="os-sheet" id="sh-perm-msg" role="dialog" aria-modal="true" aria-labelledby="sh-msg-title">
+        <div class="os-handle"></div>
+        <div class="os-app-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2L4 7V16C4 21.5 8.5 26.5 14 28C19.5 26.5 24 21.5 24 16V7L14 2Z"
+              fill="rgba(255,255,255,.35)"/>
+            <path d="M9.5 14l3 3 6-6" stroke="white" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="os-title" id="sh-msg-title">"Guardião" quer aceder às mensagens</div>
+        <div class="os-body">O Guardião vai detetar e remover mensagens fraudulentas antes de as ler.</div>
+        <button class="os-btn os-btn-allow" onclick="grant('perm-msg', 6)">Permitir</button>
+        <button class="os-btn os-btn-deny" onclick="hideSheet('perm-msg')">Não Permitir</button>
+      </div>
+    </div>
+
+    <!-- ══ S6: PERMISSION – NOTIFICATIONS ══ -->
+    <div class="screen" data-s="6">
+      <div class="row-header">
+        <button class="btn-back" onclick="go(5)" aria-label="Voltar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="step-label">Passo 3 de 3</span>
+      </div>
+
+      <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+
+      <div class="perm-icon-ring" style="background:var(--green-pale);border:1.5px solid rgba(11,163,96,.18);">
+        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+          <path d="M23 6C15 6 9 12 9 20v13l-3 5h34l-3-5V20C37 12 31 6 23 6z"
+            fill="url(#pg3)"/>
+          <path d="M19 38a4 4 0 008 0" stroke="white" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+          <defs>
+            <linearGradient id="pg3" x1="9" y1="6" x2="37" y2="43">
+              <stop stop-color="#0BA360"/>
+              <stop offset="1" stop-color="#07865A"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="t-display">Ativar avisos</div>
+      <div class="t-body" style="flex:0;margin-bottom:20px;">
+        Para ser notificado <strong>quando bloquearmos algo suspeito</strong>.
+      </div>
+
+      <ul class="trust-list">
+        <li>
+          <div class="tcheck">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2.5 6.5l3 3 5-5" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Só enviamos avisos quando necessário
+        </li>
+        <li>
+          <div class="tcheck">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2.5 6.5l3 3 5-5" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          Sem spam ou publicidade
+        </li>
+      </ul>
+
+      <button class="btn-blue" onclick="showSheet('perm-notif')">
+        Ativar avisos
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M7 5l4 4-4 4" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="overlay" id="ov-perm-notif"></div>
+      <div class="os-sheet" id="sh-perm-notif" role="dialog" aria-modal="true" aria-labelledby="sh-notif-title">
+        <div class="os-handle"></div>
+        <div class="os-app-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2L4 7V16C4 21.5 8.5 26.5 14 28C19.5 26.5 24 21.5 24 16V7L14 2Z"
+              fill="rgba(255,255,255,.35)"/>
+            <path d="M9.5 14l3 3 6-6" stroke="white" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="os-title" id="sh-notif-title">"Guardião" quer enviar notificações</div>
+        <div class="os-body">Receberá avisos quando bloquearmos chamadas ou mensagens suspeitas.</div>
+        <button class="os-btn os-btn-allow" onclick="grant('perm-notif', 7)">Permitir</button>
+        <button class="os-btn os-btn-deny" onclick="hideSheet('perm-notif')">Não Permitir</button>
+      </div>
+    </div>
+
+    <!-- ══ S7: DONE ══ -->
+    <div class="screen screen-done" data-s="7">
+      <div class="confetti-wrap" id="confetti"></div>
+
+      <div style="flex:1;"></div>
+
+      <div class="done-circle">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <path d="M13 24l8 8 15-15" stroke="var(--gold)" stroke-width="3.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="done-title">Proteção Ativada!</div>
+      <div class="done-sub">O Guardião já está a cuidar de si.<br>Pode usar o seu telemóvel com tranquilidade.</div>
+
+      <div class="done-cards">
+        <div class="done-card">
+          <div class="done-card-icon" style="background:var(--blue-light);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M4 6C4 5 5 4.1 6 4.1h2.5a1.4 1.4 0 011.3 1l1 3.6a1.4 1.4 0 01-.3 1.4L8.9 11.6a11 11 0 004.9 4.9l1.5-1.5a1.4 1.4 0 011.4-.3l3.6 1a1.4 1.4 0 011 1.3V19a2 2 0 01-2 2C7.5 21 4 17.5 4 6z" fill="var(--blue)"/>
+            </svg>
+          </div>
+          <div class="done-card-info">
+            <div class="done-card-name">Chamadas</div>
+            <div class="done-card-desc">Verificadas em tempo real</div>
+          </div>
+          <div class="done-card-status"><div class="pulse"></div> Ativo</div>
+        </div>
+        <div class="done-card">
+          <div class="done-card-icon" style="background:var(--amber-pale);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 6C3 5 3.9 4 5 4h12c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H14l-4 3v-3H5c-1.1 0-2-.9-2-2V6z" fill="var(--amber)"/>
+              <path d="M7 9h8M7 12h5" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="done-card-info">
+            <div class="done-card-name">Mensagens</div>
+            <div class="done-card-desc">Burlas removidas automaticamente</div>
+          </div>
+          <div class="done-card-status"><div class="pulse"></div> Ativo</div>
+        </div>
+        <div class="done-card">
+          <div class="done-card-icon" style="background:var(--green-pale);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="8.5" r="3.5" fill="none" stroke="var(--green)" stroke-width="1.5"/>
+              <path d="M5 18c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="17" cy="7" r="2.5" fill="none" stroke="var(--green)" stroke-width="1.3" opacity=".6"/>
+              <path d="M20 13c0-2.1-1.3-3.8-3-3.8" stroke="var(--green)" stroke-width="1.3" stroke-linecap="round" opacity=".6"/>
+            </svg>
+          </div>
+          <div class="done-card-info">
+            <div class="done-card-name">Família Informada</div>
+            <div class="done-card-desc">Recebe avisos de bloqueios</div>
+          </div>
+          <div class="done-card-status"><div class="pulse"></div> Ativo</div>
+        </div>
+      </div>
+
+      <button class="btn-blue" style="animation:fadeUp .5s ease 1s both;" onclick="go(0)">
+        Abrir o Guardião
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M7 5l4 4-4 4" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div style="flex:.5;"></div>
+    </div>
+
+  </div><!-- /phone-screen -->
+</div><!-- /phone -->
+
+<!-- Progress dots -->
+<div class="proto-dots" id="pdots">
+  <div class="pdot on"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
+  <div class="pdot"></div>
+</div>
+
+<script>
+  /* ── State ── */
+  let cur = 0, slide = 0;
+  const TOTAL = 8;
+
+  /* ── Auto-advance splash ── */
+  setTimeout(() => go(1), 2800);
+
+  /* ── Navigation ── */
+  function go(n) {
+    const all = document.querySelectorAll('.screen');
+    const prev = all[cur];
+    const next = all[n];
+    if (!next || n === cur) return;
+
+    prev.classList.remove('active');
+    prev.classList.add('exit');
+    setTimeout(() => prev.classList.remove('exit'), 420);
+
+    next.classList.add('active');
+    cur = n;
+
+    // Update bottom dots
+    document.querySelectorAll('.pdot').forEach((d, i) =>
+      d.classList.toggle('on', i === n));
+
+    // Entrance effect for done screen
+    if (n === 7) setTimeout(spawnConfetti, 350);
+
+    // Reset carousel
+    if (n === 2) { slide = 0; refreshCarousel(); }
+  }
+
+  /* ── Carousel ── */
+  function slideNext() {
+    // "Próximo" sempre avança para o ecrã do contacto de confiança
+    go(3);
+  }
+
+  function refreshCarousel() {
+    document.getElementById('ctrack').style.transform = `translateX(-${slide * 100}%)`;
+    [0,1,2].forEach(i =>
+      document.getElementById('d'+i).className = 'dot' + (i === slide ? ' on' : ''));
+    // O botão mantém sempre o mesmo texto — swipe é a forma de navegar entre slides
+  }
+
+  /* Touch swipe on carousel */
+  let tx = 0;
+  document.getElementById('ctrack').addEventListener('touchstart', e => tx = e.touches[0].clientX);
+  document.getElementById('ctrack').addEventListener('touchend', e => {
+    const dx = tx - e.changedTouches[0].clientX;
+    if (dx > 45 && slide < 2) { slide++; refreshCarousel(); }
+    if (dx < -45 && slide > 0) { slide--; refreshCarousel(); }
+  });
+
+  /* ── OS Permission sheets ── */
+  function showSheet(id) {
+    document.getElementById('ov-'+id).classList.add('show');
+    document.getElementById('sh-'+id).classList.add('show');
+  }
+  function hideSheet(id) {
+    document.getElementById('ov-'+id).classList.remove('show');
+    document.getElementById('sh-'+id).classList.remove('show');
+  }
+  function grant(id, next) {
+    hideSheet(id);
+    setTimeout(() => go(next), 320);
+  }
+
+  /* ── Confetti ── */
+  function spawnConfetti() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const wrap = document.getElementById('confetti');
+    wrap.innerHTML = '';
+    const colors = ['#E3AF64','#FDEDD3','#516AC7','#26428B','#101B3B','#D4C2A0','#F8F6F4'];
+    for (let i = 0; i < 36; i++) {
+      const p = document.createElement('div');
+      p.className = 'cp';
+      const sz = Math.random() * 9 + 4;
+      const isSquare = Math.random() > .5;
+      p.style.cssText = `
+        left:${Math.random()*100}%;
+        width:${sz}px; height:${sz}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        border-radius:${isSquare ? '2px' : '50%'};
+        animation-duration:${Math.random()*1.8+1.2}s;
+        animation-delay:${Math.random()*0.6}s;
+        opacity:.85;
+      `;
+      wrap.appendChild(p);
+    }
+  }
+</script>
+</body>
+</html>
