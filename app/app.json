@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Guardião",
+    "slug": "guardiao",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "backgroundColor": "#0A0A0A"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "pt.guardiao.app"
+    },
+    "android": {
+      "package": "pt.guardiao.app"
+    }
+  }
+}

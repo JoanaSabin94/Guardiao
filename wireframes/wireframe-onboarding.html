@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframe — Onboarding · App Bloqueio de Chamadas</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #d6d6d6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 32px 16px 64px;
+      font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    /* ── Page chrome ── */
+    .page-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #777;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .page-desc {
+      font-size: 12px;
+      color: #999;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .screen-counter {
+      font-size: 11px;
+      color: #888;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Phone frame ── */
+    .phone-frame {
+      width: 375px;
+      height: 812px;
+      background: #fff;
+      border: 2.5px solid #333;
+      border-radius: 48px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 2px 0 #bbb, 0 12px 40px rgba(0,0,0,0.18);
+    }
+
+    /* Notch */
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 30px;
+      background: #333;
+      border-radius: 0 0 18px 18px;
+      z-index: 50;
+    }
+
+    /* ── Screen container ── */
+    .screen {
+      display: none;
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      background: #fff;
+    }
+    .screen.active { display: flex; }
+
+    /* ── Status bar ── */
+    .status-bar {
+      height: 44px;
+      padding: 28px 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .status-time {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111;
+    }
+    .status-icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .s-signal {
+      display: flex;
+      gap: 1.5px;
+      align-items: flex-end;
+      height: 10px;
+    }
+    .s-signal span {
+      width: 3px;
+      background: #333;
+      border-radius: 1px;
+    }
+    .s-wifi {
+      width: 14px;
+      height: 10px;
+      border: 2px solid #333;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      position: relative;
+    }
+    .s-wifi::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 3px;
+      background: #333;
+      border-radius: 50%;
+    }
+    .s-battery {
+      width: 20px;
+      height: 11px;
+      border: 1.5px solid #333;
+      border-radius: 2px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 1.5px;
+    }
+    .s-battery::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 5px;
+      background: #333;
+      border-radius: 0 1px 1px 0;
+    }
+    .s-battery-fill {
+      width: 70%;
+      height: 100%;
+      background: #333;
+      border-radius: 1px;
+    }
+
+    /* ── Page header (nav row) ── */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 20px 0;
+      flex-shrink: 0;
+      min-height: 36px;
+    }
+    .btn-back {
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: #555;
+      cursor: pointer;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: inherit;
+    }
+    .btn-back::before {
+      content: '‹';
+      font-size: 22px;
+      line-height: 1;
+      margin-top: -1px;
+    }
+    .btn-skip {
+      background: none;
+      border: none;
+      font-size: 13px;
+      color: #999;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* ── Progress dots ── */
+    .progress-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 0 14px;
+      flex-shrink: 0;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ccc;
+      transition: all 0.2s;
+    }
+    .dot.active {
+      width: 18px;
+      border-radius: 3px;
+      background: #333;
+    }
+
+    /* ── Screen content ── */
+    .screen-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 24px 0;
+      display: flex;
+      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+    }
+    .screen-content::-webkit-scrollbar { display: none; }
+
+    /* ── Placeholder blocks ── */
+    .ph-illustration {
+      width: 100%;
+      height: 188px;
+      background: #f2f2f2;
+      border: 1.5px dashed #c0c0c0;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      flex-shrink: 0;
+    }
+    .ph-illustration-shape {
+      width: 56px;
+      height: 56px;
+      background: #ddd;
+      border-radius: 50%;
+    }
+    .ph-illustration-label {
+      font-size: 11px;
+      color: #bbb;
+      text-align: center;
+      max-width: 180px;
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    .ph-icon {
+      width: 80px;
+      height: 80px;
+      background: #ebebeb;
+      border: 1.5px dashed #c0c0c0;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #bbb;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* ── Typography ── */
+    .label-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #aaa;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .screen-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .screen-body {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.55;
+    }
+
+    /* ── Section divider ── */
+    .section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #ccc;
+      border-top: 1px dashed #ebebeb;
+      padding-top: 10px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    .screen-footer {
+      padding: 12px 24px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 13px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      font-family: inherit;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary:active { background: #333; }
+
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      background: transparent;
+      color: #555;
+      border: 1.5px solid #d4d4d4;
+      border-radius: 13px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .btn-ghost {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: center;
+      padding: 6px;
+      font-family: inherit;
+      text-decoration: underline;
+      text-decoration-color: #ddd;
+    }
+
+    /* ── Toggles ── */
+    .toggle-list {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid #f0f0f0;
+      gap: 12px;
+    }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-text { flex: 1; }
+    .toggle-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 2px;
+    }
+    .toggle-desc {
+      font-size: 11px;
+      color: #aaa;
+    }
+    .toggle {
+      width: 46px;
+      height: 27px;
+      border-radius: 14px;
+      background: #1a1a1a;
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px;
+      right: 3px;
+      transition: right 0.2s;
+    }
+    .toggle.off {
+      background: #ddd;
+    }
+    .toggle.off::after {
+      right: auto;
+      left: 3px;
+    }
+
+    /* ── Permission trust box ── */
+    .trust-box {
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 16px;
+    }
+    .trust-box-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    .trust-item {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    /* ── Stat highlight ── */
+    .stats-highlight {
+      display: flex;
+      background: #f5f5f5;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+    .stat-cell {
+      flex: 1;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-cell + .stat-cell {
+      border-left: 1px solid #e8e8e8;
+    }
+    .stat-num {
+      font-size: 26px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: -0.03em;
+    }
+    .stat-lbl {
+      font-size: 10px;
+      color: #999;
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Feature rows ── */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .feature-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #f5f5f5;
+      border-radius: 10px;
+    }
+    .feature-icon-ph {
+      width: 34px;
+      height: 34px;
+      background: #ddd;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .feature-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .feature-desc {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    /* ── Home screen ── */
+    .home-hero {
+      background: #1a1a1a;
+      border-radius: 18px;
+      padding: 20px;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    .home-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #333;
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .home-hero-count {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .home-hero-sub {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .stat-block {
+      background: #f5f5f5;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .stat-block .num {
+      font-size: 26px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: -0.03em;
+    }
+    .stat-block .lbl {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+    }
+    .section-link {
+      font-size: 12px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .activity-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 0;
+      border-bottom: 1px solid #f2f2f2;
+    }
+    .activity-row:last-child { border-bottom: none; }
+    .activity-avatar {
+      width: 38px;
+      height: 38px;
+      background: #e8e8e8;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #bbb;
+    }
+    .activity-info { flex: 1; }
+    .activity-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .activity-detail {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 1px;
+    }
+    .activity-chip {
+      font-size: 11px;
+      font-weight: 600;
+      color: #555;
+      background: #ebebeb;
+      padding: 3px 9px;
+      border-radius: 10px;
+    }
+
+    /* ── Bottom tab bar ── */
+    .tab-bar {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 30px;
+      border-top: 1px solid #ebebeb;
+      flex-shrink: 0;
+    }
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .tab-icon {
+      width: 24px;
+      height: 24px;
+      background: #ddd;
+      border-radius: 6px;
+    }
+    .tab-icon.active { background: #1a1a1a; }
+    .tab-label {
+      font-size: 10px;
+      color: #bbb;
+    }
+    .tab-label.active {
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+
+    /* ── Splash ── */
+    .splash-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f7f7f7;
+      gap: 0;
+    }
+    .splash-logo {
+      width: 88px;
+      height: 88px;
+      background: #1a1a1a;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #888;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 22px;
+    }
+    .splash-app-name {
+      font-size: 30px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+    .splash-tagline {
+      font-size: 15px;
+      color: #888;
+      text-align: center;
+      max-width: 230px;
+      line-height: 1.45;
+    }
+
+    /* ── Annotation bar ── */
+    .annotation-bar {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10,10,10,0.8);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 12px;
+      white-space: nowrap;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+
+    .nav-hint {
+      font-size: 11px;
+      color: #aaa;
+      text-align: center;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* Permission centered layout */
+    .permission-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+      padding-bottom: 12px;
+    }
+    .permission-center .screen-title { text-align: center; }
+    .permission-center .screen-body { text-align: center; }
+  </style>
+</head>
+<body>
+
+  <p class="page-label">Wireframe · Onboarding</p>
+  <p class="page-desc">Protótipo de baixa fidelidade — validação de flow · não representa visual final</p>
+
+  <div class="screen-counter" id="counterEl">Ecrã 1 de 7</div>
+
+  <!-- ══════════════════════════════════════════ PHONE ══ -->
+  <div class="phone-frame">
+
+    <!-- ── S1: Splash ── -->
+    <div class="screen active" id="s1">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-signal">
+            <span style="height:4px"></span>
+            <span style="height:6px"></span>
+            <span style="height:8px"></span>
+            <span style="height:10px"></span>
+          </div>
+          <div class="s-wifi"></div>
+          <div class="s-battery"><div class="s-battery-fill"></div></div>
+        </div>
+      </div>
+
+      <div class="splash-wrap">
+        <div class="splash-logo">LOGO<br>[app]</div>
+        <div class="splash-app-name">[Nome da App]</div>
+        <div class="splash-tagline">[Tagline — proposta de valor em uma frase]</div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-primary" onclick="go(2)">Começar</button>
+        <button class="btn-ghost" onclick="go(7)">Já tenho conta — Entrar</button>
+      </div>
+    </div>
+
+    <!-- ── S2: Value 1 — O Problema ── -->
+    <div class="screen" id="s2">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-signal"><span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:10px"></span></div>
+          <div class="s-wifi"></div>
+          <div class="s-battery"><div class="s-battery-fill"></div></div>
+        </div>
+      </div>
+      <div class="page-header">
+        <button class="btn-back" onclick="go(1)">Voltar</button>
+        <button class="btn-skip" onclick="go(7)">Saltar</button>
+      </div>
+      <div class="progress-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="screen-content">
+        <div class="ph-illustration">
+          <div class="ph-illustration-shape"></div>
+          <div class="ph-illustration-label">[Ilustração: telefone rodeado de chamadas spam / alerta]</div>
+        </div>
+
+        <div class="label-tag">O Problema</div>
+        <div class="screen-title">[Quantas chamadas indesejadas recebeu esta semana?]</div>
+        <div class="screen-body">[Texto de suporte — descreve o problema de forma empática. Burlão, spam, chamadas internacionais suspeitas. 2–3 linhas.]</div>
+
+        <div class="section-label">Prova social / dado de impacto</div>
+        <div class="stats-highlight">
+          <div class="stat-cell">
+            <div class="stat-num">[XX%]</div>
+            <div class="stat-lbl">[Label do dado]</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">[YM]</div>
+            <div class="stat-lbl">[Label do dado]</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-primary" onclick="go(3)">Próximo</button>
+      </div>
+    </div>
+
+    <!-- ── S3: Value 2 — A Solução ── -->
+    <div class="screen" id="s3">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-signal"><span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:10px"></span></div>
+          <div class="s-wifi"></div>
+          <div class="s-battery"><div class="s-battery-fill"></div></div>
+        </div>
+      </div>
+      <div class="page-header">
+        <button class="btn-back" onclick="go(2)">Voltar</button>
+        <button class="btn-skip" onclick="go(7)">Saltar</button>
+      </div>
+      <div class="progress-dots">
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="screen-content">
+        <div class="ph-illustration">
+          <div class="ph-illustration-shape"></div>
+          <div class="ph-illustration-label">[Ilustração: escudo / proteção ativa / chamada bloqueada]</div>
+        </div>
+
+        <div class="label-tag">A Solução</div>
+        <div class="screen-title">[Bloqueie automaticamente. Antes que o telefone toque.]</div>
+        <div class="screen-body">[Texto de suporte — explica como a app resolve o problema. Simples, automático, sem esforço. 2–3 linhas.]</div>
+
+        <div class="section-label">Funcionalidades principais</div>
+        <div class="feature-list">
+          <div class="feature-row">
+            <div class="feature-icon-ph"></div>
+            <div>
+              <div class="feature-name">[Feature 1 — ex: Deteção em tempo real]</div>
+              <div class="feature-desc">[Descrição breve — 1 linha]</div>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon-ph"></div>
+            <div>
+              <div class="feature-name">[Feature 2 — ex: Base de dados colaborativa]</div>
+              <div class="feature-desc">[Descrição breve — 1 linha]</div>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon-ph"></div>
+            <div>
+              <div class="feature-name">[Feature 3 — ex: Zero falsos positivos]</div>
+              <div class="feature-desc">[Descrição breve — 1 linha]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-primary" onclick="go(4)">Próximo</button>
+      </div>
+    </div>
+
+    <!-- ── S4: Permissão Contactos ── -->
+    <div class="screen" id="s4">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-signal"><span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:10px"></span></div>
+          <div class="s-wifi"></div>
+          <div class="s-battery"><div class="s-battery-fill"></div></div>
+        </div>
+      </div>
+      <div class="page-header">
+        <button class="btn-back" onclick="go(3)">Voltar</button>
+        <button class="btn-skip" onclick="go(5)">Saltar</button>
+      </div>
+      <div class="progress-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="screen-content">
+        <div class="permission-center">
+          <div class="ph-icon">[ícone<br>contactos]</div>
+
+          <div>
+            <div class="label-tag" style="text-align:center">Permissão necessária</div>
+            <div class="screen-title">[Acesso à Lista de Contactos]</div>
+            <div class="screen-body">[Precisamos de aceder à sua agenda para distinguir quem conhece de quem não conhece — e nunca bloquear os seus contactos.]</div>
+          </div>
+
+          <div class="trust-box" style="width:100%;text-align:left">
+            <div class="trust-box-title">O que fazemos com este acesso</div>
+            <div class="trust-item">
+              ✓ &nbsp;[Benefício 1 — ex: identificar chamadas da sua agenda]<br>
+              ✓ &nbsp;[Benefício 2 — ex: nunca bloquear contactos conhecidos]<br>
+              ✗ &nbsp;[Garantia — ex: não guardamos nem partilhamos contactos]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-primary" onclick="go(5)">Permitir Acesso aos Contactos</button>
+        <button class="btn-ghost" onclick="go(5)">Agora não</button>
+      </div>
+    </div>
+
+    <!-- ── S5: Permissão Chamadas & SMS ── -->
+    <div class="screen" id="s5">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-signal"><span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:10px"></span></div>
+          <div class="s-wifi"></div>
+          <div class="s-battery"><div class="s-battery-fill"></div></div>
+        </div>
+      </div>
+      <div class="page-header">
+        <button class="btn-back" onclick="go(4)">Voltar</button>
+        <button class="btn-skip" onclick="go(6)">Saltar</button>
+      </div>
+      <div class="progress-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="screen-content">
+        <div class="permission-center">
+          <div class="ph-icon">[ícone<br>chamadas<br>& SMS]</div>
+
+          <div>
+            <div class="label-tag" style="text-align:center">Permissão necessária</div>
+            <div class="screen-title">[Acesso a Chamadas e SMS]</div>
+            <div class="screen-body">[Esta é a permissão principal da app. Sem ela não conseguimos interceptar chamadas antes de tocar nem filtrar SMS de spam.]</div>
+          </div>
+
+          <div class="trust-box" style="width:100%;text-align:left">
+            <div class="trust-box-title">O que fazemos com este acesso</div>
+            <div class="trust-item">
+              ✓ &nbsp;[Benefício 1 — ex: bloquear chamadas antes de tocar]<br>
+              ✓ &nbsp;[Benefício 2 — ex: filtrar SMS de phishing e spam]<br>
+              ✗ &nbsp;[Garantia — ex: não gravamos o conteúdo das chamadas]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-primary" onclick="go(6)">Permitir Acesso a Chamadas & SMS</button>
+        <button class="btn-ghost" onclick="go(6)">Agora não</button>
+      </div>
+    </div>
+
+    <!-- ── S6: Ativação ── -->
+    <div class="screen" id="s6">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-signal"><span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:10px"></span></div>
+          <div class="s-wifi"></div>
+          <div class="s-battery"><div class="s-battery-fill"></div></div>
+        </div>
+      </div>
+      <div class="page-header">
+        <button class="btn-back" onclick="go(5)">Voltar</button>
+        <div></div>
+      </div>
+      <div class="progress-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+      </div>
+
+      <div class="screen-content">
+        <div class="label-tag">Configuração inicial</div>
+        <div class="screen-title">[Ativar proteção]</div>
+        <div class="screen-body">[Personalize o que quer bloquear. Pode ajustar em qualquer altura nas definições.]</div>
+
+        <div class="toggle-list">
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <div class="toggle-name">[Bloquear chamadas do estrangeiro]</div>
+              <div class="toggle-desc">[Números internacionais não identificados]</div>
+            </div>
+            <div class="toggle" onclick="toggleEl(this)"></div>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <div class="toggle-name">[Bloquear spammers automaticamente]</div>
+              <div class="toggle-desc">[Base de dados atualizada em tempo real]</div>
+            </div>
+            <div class="toggle" onclick="toggleEl(this)"></div>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <div class="toggle-name">[Silenciar números desconhecidos]</div>
+              <div class="toggle-desc">[Não toca — podem deixar mensagem de voz]</div>
+            </div>
+            <div class="toggle" onclick="toggleEl(this)"></div>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <div class="toggle-name">[Alertas de spam em tempo real]</div>
+              <div class="toggle-desc">[Notificação quando chamada suspeita é detetada]</div>
+            </div>
+            <div class="toggle" onclick="toggleEl(this)"></div>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-text">
+              <div class="toggle-name">[Filtrar SMS de phishing]</div>
+              <div class="toggle-desc">[Mover SMS suspeitos para pasta de spam]</div>
+            </div>
+            <div class="toggle off" onclick="toggleEl(this)"></div>
+          </div>
+        </div>
+
+        <div class="section-label">Aviso</div>
+        <div style="font-size:11px;color:#bbb;line-height:1.5;padding-bottom:8px">[Nota: pode alterar estas configurações a qualquer momento em Definições → Proteção.]</div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-primary" onclick="go(7)">Concluir Configuração</button>
+        <button class="btn-ghost" onclick="go(7)">Usar configuração padrão</button>
+      </div>
+    </div>
+
+    <!-- ── S7: Home ── -->
+    <div class="screen" id="s7">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <div class="s-signal"><span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:10px"></span></div>
+          <div class="s-wifi"></div>
+          <div class="s-battery"><div class="s-battery-fill"></div></div>
+        </div>
+      </div>
+
+      <div class="screen-content" style="padding-top:12px">
+        <!-- Greeting -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <div style="font-size:12px;color:#aaa">Bom dia,</div>
+            <div style="font-size:19px;font-weight:800;color:#111;letter-spacing:-0.02em">[Nome do utilizador]</div>
+          </div>
+          <div style="width:38px;height:38px;background:#e0e0e0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#bbb;text-align:center;line-height:1.2">foto<br>perfil</div>
+        </div>
+
+        <!-- Status hero -->
+        <div class="home-hero">
+          <div class="home-badge"><div class="badge-dot"></div>Proteção ativa</div>
+          <div class="home-hero-count">[XX] chamadas bloqueadas</div>
+          <div class="home-hero-sub">[hoje · desde que ativou a app]</div>
+        </div>
+
+        <!-- Stat grid -->
+        <div class="stat-grid">
+          <div class="stat-block">
+            <div class="num">[00]</div>
+            <div class="lbl">[Esta semana]</div>
+          </div>
+          <div class="stat-block">
+            <div class="num">[000]</div>
+            <div class="lbl">[Total bloqueado]</div>
+          </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="section-header">
+          <div class="section-title">Atividade recente</div>
+          <div class="section-link">Ver tudo</div>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-avatar">?</div>
+          <div class="activity-info">
+            <div class="activity-name">+351 XXX XXX XXX</div>
+            <div class="activity-detail">Há 5 min · Chamada bloqueada</div>
+          </div>
+          <div class="activity-chip">Spam</div>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-avatar">?</div>
+          <div class="activity-info">
+            <div class="activity-name">+44 XX XXXX XXXX</div>
+            <div class="activity-detail">Há 23 min · Chamada bloqueada</div>
+          </div>
+          <div class="activity-chip">Estrangeiro</div>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-avatar">?</div>
+          <div class="activity-info">
+            <div class="activity-name">+351 XXX XXX XXX</div>
+            <div class="activity-detail">Há 1h · SMS spam filtrado</div>
+          </div>
+          <div class="activity-chip">SMS</div>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-avatar">?</div>
+          <div class="activity-info">
+            <div class="activity-name">+1 XXX XXX XXXX</div>
+            <div class="activity-detail">Há 2h · Chamada bloqueada</div>
+          </div>
+          <div class="activity-chip">Spam</div>
+        </div>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="tab-bar">
+        <div class="tab-item">
+          <div class="tab-icon active"></div>
+          <div class="tab-label active">Início</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon"></div>
+          <div class="tab-label">Bloqueados</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon"></div>
+          <div class="tab-label">Regras</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon"></div>
+          <div class="tab-label">Definições</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /phone -->
+
+  <div class="nav-hint">← → para navegar &nbsp;·&nbsp; clique nos botões dentro do ecrã</div>
+
+  <div class="annotation-bar" id="annotationEl">Ecrã 1: Splash Screen</div>
+
+  <script>
+    const labels = {
+      1: 'Ecrã 1: Splash Screen',
+      2: 'Ecrã 2: Valor — O Problema',
+      3: 'Ecrã 3: Valor — A Solução',
+      4: 'Ecrã 4: Permissão — Contactos',
+      5: 'Ecrã 5: Permissão — Chamadas & SMS',
+      6: 'Ecrã 6: Configuração & Ativação',
+      7: 'Ecrã 7: Home Screen',
+    };
+
+    let current = 1;
+
+    function go(n) {
+      document.getElementById('s' + current).classList.remove('active');
+      current = n;
+      document.getElementById('s' + current).classList.add('active');
+      document.getElementById('counterEl').textContent = 'Ecrã ' + current + ' de 7';
+      document.getElementById('annotationEl').textContent = labels[current];
+    }
+
+    function toggleEl(el) {
+      el.classList.toggle('off');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' && current < 7) go(current + 1);
+      if (e.key === 'ArrowLeft' && current > 1) go(current - 1);
+    });
+  </script>
+</body>
+</html>
