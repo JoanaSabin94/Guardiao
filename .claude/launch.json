@@ -7,6 +7,20 @@
       "runtimeArgs": ["serve", "."],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "Wireframes High-fi",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "Wireframes High-fi"],
+      "port": 3001,
+      "autoPort": true
+    }
+    ,{
+      "name": "Wireframes Lo-fi",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "wireframes"],
+      "port": 3002,
+      "autoPort": true
     }
   ]
 }
