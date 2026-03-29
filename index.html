@@ -6,7 +6,7 @@
   <title>Guardião — Protótipo de Onboarding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ── Neue Haas Grotesk — place font files in /fonts/ ── */
     @font-face {
@@ -57,40 +57,60 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* ── Wireframe tokens — grayscale only ── */
-      --navy:       #111111;
-      --navy-mid:   #333333;
-      --navy-light: #666666;
-      --gold:       #999999;
-      --cream:      #F5F5F5;
-      --light:      #F8F8F8;
+      /* ══════════════════════════════════════
+         GUARDIÃO — HI-FI DESIGN TOKENS
+         Single source of truth. Mirror of /design-system/tokens.js
+      ══════════════════════════════════════ */
 
-      --bg-page:    #E0E0E0;
+      /* Primary palette */
+      --navy:       #101B3B;   /* deep navy */
+      --navy-mid:   #26428B;   /* royal blue */
+      --navy-light: #516AC7;   /* mid blue */
+
+      /* Accent palette */
+      --gold:       #E3AF64;   /* warm gold — badges, blocked events, CTAs */
+      --cream:      #FDEDD3;   /* cream — warm surfaces, text on dark */
+      --light:      #F8F6F7;   /* near-white — page background */
+
+      /* Surfaces */
+      --bg-page:    #F8F6F7;
       --surface:    #FFFFFF;
-      --surface-2:  #F5F5F5;
-      --surface-3:  #EEEEEE;
-      --border:     rgba(0,0,0,.09);
-      --border-2:   rgba(0,0,0,.16);
+      --surface-2:  #F8F6F7;
+      --surface-3:  #F0ECE8;
+      --surface-warm: #FDEDD3;  /* cream — warm card backgrounds */
 
-      --blue:       #333333;
-      --blue-mid:   #111111;
-      --blue-light: rgba(0,0,0,.05);
-      --blue-pale:  #F2F2F2;
+      /* Borders */
+      --border:   rgba(38,66,139,.08);
+      --border-2: rgba(38,66,139,.16);
 
-      --green:      #777777;
-      --green-pale: #EEEEEE;
-      --amber:      #999999;
-      --amber-pale: #F5F5F5;
-      --red:        #999999;
+      /* Blue aliases (kept for backward compat) */
+      --blue:       #26428B;
+      --blue-mid:   #516AC7;
+      --blue-light: rgba(38,66,139,.08);
+      --blue-pale:  rgba(38,66,139,.05);
 
-      --text-1:     #111111;
-      --text-2:     #555555;
-      --text-3:     #999999;
+      /* Semantic — NO red anywhere */
+      --green:      #516AC7;
+      --green-pale: rgba(81,106,199,.10);
+      --amber:      #E3AF64;
+      --amber-pale: rgba(227,175,100,.12);
+      --red:        #E3AF64;   /* intentional: gold, not red */
 
-      --sh-xs: 0 1px 2px rgba(0,0,0,.05);
-      --sh-sm: 0 2px 10px rgba(0,0,0,.07), 0 0 1px rgba(0,0,0,.04);
-      --sh-md: 0 8px 28px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
-      --sh-lg: 0 24px 64px rgba(0,0,0,.10), 0 4px 16px rgba(0,0,0,.05);
+      /* Text */
+      --text-1:  #101B3B;
+      --text-2:  #516AC7;
+      --text-3:  rgba(81,106,199,.65);
+
+      /* Shadows */
+      --sh-xs: 0 1px 2px  rgba(16,27,59,.05);
+      --sh-sm: 0 1px 4px  rgba(16,27,59,.06);
+      --sh-md: 0 8px 24px rgba(16,27,59,.12);
+      --sh-lg: 0 16px 40px rgba(38,66,139,.20);
+
+      /* Gradients */
+      --grad-hero:   linear-gradient(160deg, #101B3B 0%, #26428B 50%, #E3AF64 100%);
+      --grad-subtle: linear-gradient(160deg, #dce8ff 0%, #eef3ff 60%, #FDEDD3 100%);
+      --grad-shield: linear-gradient(180deg, #26428B 0%, #516AC7 100%);
     }
 
     html, body {
@@ -241,40 +261,39 @@
       flex-shrink: 0;
     }
     .t-display {
-      font-family: 'Neue Haas Grotesk', 'Inter', system-ui, sans-serif;
-      font-size: 26px;
-      font-weight: 500;
-      color: var(--text-1);
-      line-height: 1.2;
+      font-family: 'NOFEX', 'DM Serif Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.15;
       margin-bottom: 12px;
       flex-shrink: 0;
-      letter-spacing: -.02em;
-      text-transform: none;
+      letter-spacing: -0.5px;
     }
     .t-body {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.65;
-      color: var(--text-2);
+      color: var(--navy-light);
       flex: 1;
     }
-    .t-body strong { color: var(--text-1); font-weight: 600; }
+    .t-body strong { color: var(--navy); font-weight: 600; }
 
     /* Buttons */
     .btn-blue {
       display: flex; align-items: center; justify-content: center; gap: 8px;
       width: 100%; height: 58px;
-      background: #111111;
-      color: #FFFFFF;
+      background: var(--navy);
+      color: var(--cream);
       font-family: 'Neue Haas Grotesk', 'DM Sans', sans-serif;
-      font-size: 16px; font-weight: 700;
-      border: none; border-radius: 16px;
+      font-size: 16px; font-weight: 500;
+      border: none; border-radius: 999px;
       cursor: pointer;
-      transition: .15s;
-      box-shadow: 0 4px 14px rgba(0,0,0,.20);
+      transition: background .18s, transform .12s;
+      box-shadow: var(--sh-md);
       flex-shrink: 0;
-      letter-spacing: -.01em;
+      letter-spacing: 0.1px;
     }
-    .btn-blue:hover  { background: #333333; }
+    .btn-blue:hover  { background: var(--navy-mid); }
     .btn-blue:active { transform: scale(.98); }
 
     .btn-outline {
@@ -319,7 +338,7 @@
     }
     .progress-fill {
       height: 100%;
-      background: #111111;
+      background: var(--gold);
       border-radius: 4px;
       transition: width .4s cubic-bezier(.4,0,.2,1);
     }
@@ -328,7 +347,7 @@
        SCREEN 0 – SPLASH
     ══════════════════════════════════════ */
     .screen-splash {
-      background: #1A1A1A;
+      background: var(--navy);
       align-items: center;
       justify-content: center;
       padding: 0;
@@ -381,8 +400,8 @@
     /* ── Hero card ── */
     .welcome-hero-card {
       margin: 0;
-      background: #F0F0F0;
-      border-radius: 0 0 28px 28px;
+      background: var(--grad-subtle);
+      border-radius: 0 0 32px 32px;
       padding: 56px 20px 0;
       display: flex; flex-direction: column; align-items: center;
       overflow: hidden; flex-shrink: 0;
@@ -391,15 +410,15 @@
     /* Mini phone mockup inside the card */
     .hero-phone {
       width: 180px;
-      background: #222222;
+      background: var(--navy);
       border-radius: 22px 22px 0 0;
       overflow: hidden;
-      box-shadow: 0 -4px 16px rgba(0,0,0,.15);
+      box-shadow: 0 -4px 24px rgba(16,27,59,.28), var(--sh-lg);
       flex-shrink: 0;
     }
     .hero-phone-bar {
       height: 20px;
-      background: #111111;
+      background: rgba(0,0,0,.30);
       display: flex; align-items: center; justify-content: center;
     }
     .hero-phone-pill {
@@ -441,19 +460,19 @@
       width: 40px; height: 40px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
-    .hero-call-btn.decline { background: #555555; }
-    .hero-call-btn.accept  { background: #888888; }
+    .hero-call-btn.decline { background: rgba(255,255,255,.15); }
+    .hero-call-btn.accept  { background: var(--gold); }
 
     /* ── Copy ── */
     .welcome-copy { padding: 22px 24px 8px; flex-shrink: 0; }
     .welcome-headline {
-      font-family: 'Neue Haas Grotesk', 'DM Sans', sans-serif;
-      font-size: 28px; font-weight: 700;
-      color: var(--navy); line-height: 1.2;
-      margin-bottom: 10px; letter-spacing: -.022em;
+      font-family: 'NOFEX', 'DM Serif Display', Georgia, serif;
+      font-size: 30px; font-weight: 700;
+      color: var(--navy); line-height: 1.15;
+      margin-bottom: 10px; letter-spacing: -0.5px;
     }
     .welcome-sub {
-      font-size: 15px; line-height: 1.6; color: var(--text-2);
+      font-size: 15px; line-height: 1.65; color: var(--navy-light);
     }
     .welcome-sub strong { color: var(--navy); font-weight: 700; }
 
@@ -475,7 +494,7 @@
     }
     .feature-icon {
       width: 40px; height: 40px;
-      background: rgba(38,66,139,.08);
+      background: rgba(227,175,100,.18);
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
@@ -539,7 +558,7 @@
     ══════════════════════════════════════ */
     .perm-hero {
       width: 100%;
-      background: #F0F0F0;
+      background: var(--grad-subtle);
       border-radius: 24px;
       padding: 36px 0;
       display: flex; align-items: center; justify-content: center;
@@ -592,7 +611,7 @@
     }
     .tcheck {
       width: 26px; height: 26px;
-      background: #E8E8E8;
+      background: rgba(227,175,100,.18);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
@@ -626,7 +645,7 @@
     }
     .os-app-icon {
       width: 52px; height: 52px;
-      background: #222222;
+      background: var(--navy);
       border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 12px;
@@ -649,8 +668,8 @@
       margin-top: 9px;
     }
     .os-btn:active { transform: scale(.98); }
-    .os-btn-allow { background: #111111; color: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.18); }
-    .os-btn-allow:hover { background: #333333; }
+    .os-btn-allow { background: var(--navy); color: var(--cream); box-shadow: var(--sh-sm); }
+    .os-btn-allow:hover { background: var(--navy-mid); }
     .os-btn-deny { background: var(--surface-2); color: var(--text-2); border: 1.5px solid var(--border); }
     .os-btn-deny:hover { background: var(--surface-3); }
 
@@ -672,7 +691,7 @@
     .done-glow {
       position: absolute;
       width: 300px; height: 300px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,0,0,.065) 0%, rgba(0,0,0,0) 68%);
+      background: radial-gradient(circle, rgba(38,66,139,.12) 0%, rgba(38,66,139,0) 68%);
     }
     .done-shield-svg {
       position: relative; z-index: 1; width: 148px; height: auto;
@@ -681,20 +700,20 @@
     }
     @keyframes bounceIn { from{transform:scale(.3) rotate(-6deg);opacity:0} to{transform:scale(1) rotate(0);opacity:1} }
     .done-sp {
-      position: absolute; background: #C0C0C0;
+      position: absolute; background: var(--gold);
       clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
       animation: spFloat ease-in-out infinite;
     }
     @keyframes spFloat { 0%,100%{transform:translateY(0) rotate(0deg) scale(1)} 50%{transform:translateY(-7px) rotate(22deg) scale(1.15)} }
     .done-title {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-      font-size: 33px; font-weight: 800; color: #111111;
+      font-family: 'NOFEX', 'DM Serif Display', Georgia, serif;
+      font-size: 33px; font-weight: 700; color: var(--navy);
       letter-spacing: -.03em; line-height: 1.15;
       margin-bottom: 13px; flex-shrink: 0;
       animation: fadeUp .5s ease .5s both;
     }
     .done-sub {
-      font-size: 15px; color: #777777;
+      font-size: 15px; color: var(--navy-light);
       line-height: 1.6; flex-shrink: 0;
       max-width: 264px; margin-left: auto; margin-right: auto;
       animation: fadeUp .5s ease .62s both;
@@ -719,7 +738,7 @@
       transition:background .22s;
       position:relative;
     }
-    .toggle.on .toggle-track { background:var(--text-1); }
+    .toggle.on .toggle-track { background:var(--navy); }
     .toggle-thumb {
       position:absolute; top:3px; left:3px;
       width:22px; height:22px; border-radius:50%;
@@ -742,7 +761,7 @@
        APP SCREENS
     ══════════════════════════════════════ */
     .app-screen {
-      background: #EFEFEF;
+      background: var(--bg-page);
       padding: 0;
       display: flex;
       flex-direction: column;
@@ -759,19 +778,19 @@
       align-items: center;
       justify-content: space-between;
       padding: 52px 16px 14px;
-      background: #EFEFEF;
+      background: var(--bg-page);
       flex-shrink: 0;
     }
     .app-greeting {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-      font-size: 26px; font-weight: 800;
-      color: var(--text-1); letter-spacing: -.025em;
+      font-family: 'NOFEX', 'DM Serif Display', Georgia, serif;
+      font-size: 26px; font-weight: 700;
+      color: var(--navy); letter-spacing: -.025em;
     }
     .app-sub-greeting { font-size: 12px; color: var(--text-3); margin-top: 2px; }
 
     /* Protection hero card */
     .prot-card {
-      background: #5A5A5A;
+      background: var(--grad-shield);
       border-radius: 22px;
       padding: 32px 22px 36px;
       margin-bottom: 12px;
@@ -795,7 +814,7 @@
       position: absolute; top: 16px; right: 16px;
     }
     .prot-badge-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: #9E9E9E;
+      width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
       animation: activePulse 2s ease-in-out infinite;
     }
     @keyframes activePulse { 0%,100%{opacity:1} 50%{opacity:.4} }
@@ -843,7 +862,7 @@
     }
     .activity-event-icon {
       width: 40px; height: 40px; border-radius: 12px;
-      background: #2A2A2A; display: flex; align-items: center;
+      background: var(--navy-mid); display: flex; align-items: center;
       justify-content: center; flex-shrink: 0;
     }
     .activity-event-body { flex: 1; }
@@ -851,7 +870,7 @@
     .activity-event-sub { font-size: 12px; color: var(--text-3); margin-top: 3px; }
     .activity-event-badge {
       font-size: 10px; font-weight: 700; color: #fff;
-      background: #2A2A2A; border-radius: 6px; padding: 3px 8px;
+      background: var(--gold); border-radius: 6px; padding: 3px 8px;
       letter-spacing: .05em; text-transform: uppercase; flex-shrink: 0;
     }
     @keyframes statBump {
@@ -896,7 +915,7 @@
     }
 
     /* ── Number detail screen ── */
-    .detail-screen { background: #F7F7F7; }
+    .detail-screen { background: var(--bg-page); }
     .detail-header {
       display: flex; align-items: center;
       padding: 52px 16px 10px; flex-shrink: 0;
@@ -914,7 +933,7 @@
     }
     .detail-avatar {
       width: 80px; height: 80px; border-radius: 50%;
-      background: #E0E0E0; display: flex; align-items: center; justify-content: center;
+      background: var(--surface-3); display: flex; align-items: center; justify-content: center;
       margin-bottom: 16px;
     }
     .detail-number {
@@ -926,8 +945,8 @@
       border-radius: 20px; padding: 5px 13px;
       font-size: 12px; font-weight: 600; letter-spacing: .02em;
     }
-    .badge-suspicious { background: #E8E8E8; color: #444; }
-    .badge-safe       { background: #EFEFEF; color: #666; }
+    .badge-suspicious { background: var(--amber-pale); color: var(--amber); }
+    .badge-safe       { background: var(--green-pale); color: var(--green); }
     .detail-actions {
       display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
       padding: 0 16px 16px;
@@ -960,7 +979,7 @@
     .feedback-btns  { display: flex; gap: 8px; }
     .fb-btn {
       width: 38px; height: 38px; border-radius: 50%;
-      background: #F0F0F0; border: 1px solid var(--border);
+      background: var(--surface-3); border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: background .15s;
     }
@@ -983,7 +1002,7 @@
     .search-input::placeholder { color: var(--text-3); }
     .paste-btn {
       display: flex; align-items: center; gap: 5px;
-      background: #EBEBEB; border: none; border-radius: 9px;
+      background: var(--surface-3); border: none; border-radius: 9px;
       padding: 7px 11px; font-size: 13px; font-weight: 600;
       color: var(--text-2); cursor: pointer; font-family: inherit; flex-shrink: 0;
     }
@@ -1004,7 +1023,7 @@
     .recent-item:active { background: #F5F5F5; }
     .recent-avatar {
       width: 46px; height: 46px; border-radius: 50%;
-      background: #E4E4E4; flex-shrink: 0;
+      background: var(--surface-3); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
     }
     .recent-info { flex: 1; min-width: 0; }
@@ -1026,7 +1045,7 @@
     .tool-item:last-child { border-bottom: none; }
     .tool-icon {
       width: 40px; height: 40px; border-radius: 10px;
-      background: #E8E8E8; flex-shrink: 0;
+      background: var(--surface-3); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
     }
     .tool-body { flex: 1; min-width: 0; }
@@ -1065,13 +1084,13 @@
     }
     .psp-badge svg { flex-shrink: 0; }
     .vp0-title {
-      font-size: 26px; font-weight: 700; color: var(--text-1);
+      font-size: 26px; font-weight: 700; color: var(--navy);
       letter-spacing: -.025em; line-height: 1.2;
       margin-bottom: 10px;
       animation: fadeUp .45s ease 1.1s both;
     }
     .vp0-body {
-      font-size: 14px; color: var(--text-2);
+      font-size: 14px; color: var(--navy-light);
       line-height: 1.65; margin: 0;
       animation: fadeUp .45s ease 1.22s both;
     }
@@ -1092,9 +1111,9 @@
       flex-shrink: 0;
     }
     .vp-logo-text {
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      font-family: 'NOFEX', 'DM Serif Display', Georgia, serif;
       font-size: 13px; font-weight: 800;
-      color: #111; letter-spacing: .02em;
+      color: var(--navy); letter-spacing: .02em;
     }
     .vp-hero {
       flex: 1;
@@ -1107,12 +1126,12 @@
       text-align: center; flex-shrink: 0;
     }
     .vp-title {
-      font-family: 'Neue Haas Grotesk','DM Sans',sans-serif;
+      font-family: 'NOFEX', 'DM Serif Display', Georgia, serif;
       font-size: 24px; font-weight: 700;
-      color: #111; line-height: 1.2;
-      letter-spacing: -.025em; margin-bottom: 10px;
+      color: var(--navy); line-height: 1.2;
+      letter-spacing: -0.5px; margin-bottom: 10px;
     }
-    .vp-sub { font-size: 14px; color: #666; line-height: 1.6; }
+    .vp-sub { font-size: 14px; color: var(--navy-light); line-height: 1.6; }
     .vp-pagination {
       display: flex; gap: 7px;
       justify-content: center;
@@ -1120,9 +1139,9 @@
     }
     .vp-pip {
       height: 6px; border-radius: 3px;
-      background: #D5D5D5; transition: all .3s ease;
+      background: var(--border-2); transition: all .3s ease;
     }
-    .vp-pip.active { width: 20px; background: #111; }
+    .vp-pip.active { width: 20px; background: var(--navy); }
     .vp-pip:not(.active) { width: 6px; }
     .vp-cta-area { padding: 0 24px 40px; flex-shrink: 0; }
 
@@ -1137,7 +1156,7 @@
       90%, 100%{ opacity: 0; }
     }
     .ca-phone {
-      background: #1A1A1A;
+      background: var(--navy);
       border-radius: 20px;
       overflow: hidden;
       position: relative;
@@ -1168,7 +1187,7 @@
     /* Avatar */
     .ca-avatar {
       width: 56px; height: 56px; border-radius: 50%;
-      background: #333; border: 1.5px solid #444;
+      background: var(--navy-mid); border: 1.5px solid var(--navy-light);
       display: flex; align-items: center; justify-content: center;
       margin-top: 8px; flex-shrink: 0; position: relative; z-index: 2;
     }
@@ -1197,8 +1216,8 @@
       width: 44px; height: 44px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
-    .ca-btn-decline { background: #555; }
-    .ca-btn-accept  { background: #888; animation: caAcceptFade 6s linear infinite; }
+    .ca-btn-decline { background: rgba(255,255,255,.15); }
+    .ca-btn-accept  { background: var(--gold); animation: caAcceptFade 6s linear infinite; }
     @keyframes caAcceptFade {
       0%, 48%  { opacity: 1; }
       60%, 100%{ opacity: .2; }
@@ -1219,7 +1238,7 @@
     }
     .ca-block-icon {
       width: 44px; height: 44px; border-radius: 12px;
-      background: #333; border: 1.5px solid #555;
+      background: var(--navy-mid); border: 1.5px solid var(--navy-light);
       display: flex; align-items: center; justify-content: center;
     }
     .ca-block-label {
@@ -1240,8 +1259,8 @@
     }
     /* Push notification banner */
     .ma-notif {
-      background: #F5F5F5;
-      border: 1px solid #E0E0E0;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 14px;
       padding: 10px 14px;
       display: flex; gap: 10px; align-items: center;
@@ -1254,23 +1273,23 @@
     }
     .ma-notif-icon {
       width: 30px; height: 30px; border-radius: 8px;
-      background: #222;
+      background: var(--navy);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .ma-notif-app  { font-size: 11px; font-weight: 700; color: #111; }
-    .ma-notif-body { font-size: 11px; color: #666; line-height: 1.4; margin-top: 1px; }
+    .ma-notif-app  { font-size: 11px; font-weight: 700; color: var(--navy); }
+    .ma-notif-body { font-size: 11px; color: var(--navy-light); line-height: 1.4; margin-top: 1px; }
     /* Messages thread */
     .ma-thread {
-      background: #FFFFFF;
-      border: 1px solid #E8E8E8;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
     }
     .ma-thread-header {
       padding: 10px 14px;
-      font-size: 11px; font-weight: 700; color: #555;
-      border-bottom: 1px solid #F0F0F0;
+      font-size: 11px; font-weight: 700; color: var(--navy-light);
+      border-bottom: 1px solid var(--border);
       letter-spacing: .04em; text-transform: uppercase;
     }
     .ma-bubbles { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
@@ -1281,11 +1300,11 @@
       font-size: 12px; line-height: 1.4;
     }
     .ma-bubble-old {
-      background: #F0F0F0; color: #333;
+      background: var(--surface-3); color: var(--navy);
       align-self: flex-start;
     }
     .ma-bubble-new {
-      background: #1A1A1A; color: rgba(255,255,255,.9);
+      background: var(--navy); color: rgba(255,255,255,.9);
       align-self: flex-start;
       position: relative;
       animation: maBubble 6s linear infinite;
@@ -1297,7 +1316,7 @@
     }
     .ma-spam-badge {
       position: absolute; top: -8px; right: -8px;
-      background: #333; color: #fff;
+      background: var(--gold); color: var(--navy);
       font-size: 8px; font-weight: 700; letter-spacing: .08em;
       padding: 2px 6px; border-radius: 100px;
       animation: maSpam 6s linear infinite;
@@ -1329,7 +1348,7 @@
       display: flex; align-items: center; justify-content: center;
       color: var(--text-2);
     }
-    .perm-card.active .perm-card-icon { background: var(--text-1); color: white; }
+    .perm-card.active .perm-card-icon { background: var(--navy); color: white; }
     .perm-card-body { flex: 1; }
     .perm-card-title { font-size: 14px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
     .perm-card-desc  { font-size: 12px; color: var(--text-3); line-height: 1.45; }
@@ -1364,7 +1383,7 @@
       background: var(--surface-2); border-radius: 3px; overflow: hidden;
     }
     .perms-bar-fill {
-      height: 100%; width: 0%; background: var(--text-1);
+      height: 100%; width: 0%; background: var(--navy);
       border-radius: 3px; transition: width .45s cubic-bezier(.4,0,.2,1);
     }
     .perms-bar-label {
@@ -1484,7 +1503,7 @@
       background: #f5f5f5; font-size: 15px; font-weight: 500; color: var(--text-2);
       cursor: pointer; font-family: inherit;
     }
-    .prot-card.paused { background: #888; }
+    .prot-card.paused { background: var(--navy-light); }
     .prot-card.paused .prot-card-status::after { content: ' (em pausa)'; font-size: 14px; font-weight: 400; opacity: .7; }
 
     /* ── Progress dots at bottom ── */
@@ -1792,7 +1811,7 @@
       <div class="overlay" id="ov-perm-deny"></div>
       <div class="os-sheet" id="sh-perm-deny" role="dialog">
         <div class="os-handle"></div>
-        <div class="os-app-icon" style="background:#4a4a4a;">
+        <div class="os-app-icon" style="background:var(--navy);">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
             <path d="M14 4L2 26h24L14 4z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M14 12v6" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
@@ -1951,7 +1970,7 @@
           </svg>
         </div>
         <div class="activity-event" id="activity-event-msg" style="display:none;cursor:pointer;margin-top:8px;" onclick="go(11)">
-          <div class="activity-event-icon" style="background:#555;">
+          <div class="activity-event-icon" style="background:var(--navy-mid);">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <path d="M2 3h14c.6 0 1 .4 1 1v8c0 .6-.4 1-1 1H5l-4 4V4c0-.6.4-1 1-1z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <path d="M9 7v2M9 11h.01" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
@@ -2245,7 +2264,7 @@
       <div class="detail-scroll">
         <!-- Hero -->
         <div class="detail-hero">
-          <div class="detail-avatar" style="background:#2A2A2A;">
+          <div class="detail-avatar" style="background:var(--navy);">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
               <path d="M2 2h5l1.5 6-3 2a14 14 0 007.5 7.5l2-3 6 1.5V22a2 2 0 01-2 2C7 24 2 17 2 4a2 2 0 012-2z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               <path d="M20 3l5 5M25 3l-5 5" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -2304,7 +2323,7 @@
 
         <!-- Sender hero -->
         <div class="detail-hero" style="padding-top:20px;padding-bottom:16px;">
-          <div class="detail-avatar" style="background:#555;">
+          <div class="detail-avatar" style="background:var(--navy-mid);">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
               <path d="M3 4h22c.6 0 1 .4 1 1v14c0 .6-.4 1-1 1H8l-6 5V5c0-.6.4-1 1-1z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
@@ -2371,7 +2390,7 @@
 
         <!-- User card -->
         <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--border);">
-          <div style="width:48px;height:48px;border-radius:50%;background:#DCDCDC;display:flex;align-items:center;justify-content:center;">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--surface-3);display:flex;align-items:center;justify-content:center;">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
               <circle cx="11" cy="8" r="4" fill="#999"/>
               <path d="M3 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#999" stroke-width="1.8" stroke-linecap="round" fill="none"/>
