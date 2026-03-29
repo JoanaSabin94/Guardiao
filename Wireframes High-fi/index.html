@@ -772,7 +772,7 @@
     .app-scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 0 16px 90px;
+      padding: 0 16px 32px;
       -webkit-overflow-scrolling: touch;
     }
     .app-header {
@@ -938,46 +938,6 @@
     .event-in { animation: eventIn .4s cubic-bezier(.25,.8,.25,1) both; }
 
     /* App Tab Bar */
-    .app-tabbar {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 73px;
-      background: #fff;
-      border-top: 1px solid rgba(0,0,0,.08);
-      display: none;
-      align-items: flex-start;
-      justify-content: space-around;
-      padding-top: 10px;
-      z-index: 200;
-    }
-    .app-tabbar.visible { display: flex; }
-    .tab-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      background: none; border: none;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px; font-weight: 600; color: rgba(16,27,59,.4);
-      cursor: pointer; padding: 0 8px;
-      transition: color .15s; min-width: 56px;
-      position: relative;
-    }
-    .tab-btn.active { color: #101B3B; font-weight: 600; }
-    .tab-btn.active::after { display: none; }
-    /* Home icon — substituir PNG por SVG de casa sólida via CSS mask */
-    .tab-icon-png { display: none; }
-    .tab-btn:first-child::before {
-      content:    '';
-      display:    block;
-      width:      24px;
-      height:     24px;
-      background-color: currentColor;
-      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E");
-      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E");
-      -webkit-mask-size: contain;
-      mask-size: contain;
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-      -webkit-mask-position: center;
-      mask-position: center;
-    }
 
     /* Placeholder app screens */
     .app-placeholder {
@@ -999,7 +959,7 @@
       font-size: 15px; color: var(--text-2); font-family: inherit;
       padding: 6px 0;
     }
-    .detail-scroll { flex: 1; overflow-y: auto; padding: 0 0 90px; }
+    .detail-scroll { flex: 1; overflow-y: auto; padding: 0 0 32px; }
     .detail-hero {
       display: flex; flex-direction: column; align-items: center;
       padding: 20px 24px 24px; text-align: center;
@@ -1117,10 +1077,9 @@
     }
     .tool-item:last-child { border-bottom: none; }
     .tool-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: rgba(227,175,100,.18); flex-shrink: 0;
+      width: 40px; height: 40px;
+      flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      color: var(--navy-mid);
     }
     .tool-body { flex: 1; min-width: 0; }
     .tool-title { font-size: 14px; font-weight: 500; color: var(--text-1); margin-bottom: 2px; }
@@ -1651,21 +1610,52 @@
     }
 
     /* ── Pause protection feature ── */
+    /* ── Pause card — Figma node 95:2323 ── */
     .pause-card {
-      background: #fff; border-radius: 16px;
-      border: 1px solid var(--border); padding: 16px; margin-bottom: 12px;
+      background: #FFFFFF;
+      border: 1px solid #ECEDEF;
+      border-radius: 16px;
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      box-sizing: border-box;
     }
-    .pause-card-header {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+    .pause-card-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;          /* 16px */
+      line-height: 1.2125rem;   /* 19.36px */
+      color: #101B3B;
+      letter-spacing: 0;
+      margin: 0;
     }
-    .pause-card-title { font-size: 14px; font-weight: 600; color: var(--text-1); }
-    .pause-card-desc { font-size: 12px; color: var(--text-3); line-height: 1.55; margin-bottom: 14px; }
+    .pause-card-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.875rem;      /* 14px */
+      line-height: 1.059rem;    /* 16.94px */
+      color: rgba(16, 27, 59, 0.60);
+      letter-spacing: 0;
+      margin: 0;
+    }
     .pause-btn {
-      width: 100%; padding: 11px; border-radius: 12px;
-      border: 1.5px solid #ddd; background: none; font-size: 14px; font-weight: 500;
-      color: var(--text-1); cursor: pointer; font-family: inherit; transition: background .15s;
+      width: 100%;
+      height: 44px;
+      background: #26428B;
+      border: none;
+      border-radius: 100px;
+      font-family: 'Neue Haas Grotesk', 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;          /* 16px */
+      line-height: 1.5rem;      /* 24px */
+      color: #FFFFFF;
+      cursor: pointer;
+      letter-spacing: 0;
+      transition: opacity .15s;
     }
-    .pause-btn:active { background: #f5f5f5; }
+    .pause-btn:active { opacity: .82; }
     .pause-countdown {
       display: flex; align-items: center; justify-content: space-between;
       background: #f5f5f5; border-radius: 12px; padding: 12px 14px;
@@ -1706,6 +1696,129 @@
     }
     .prot-card.paused { background: #888; }
     .prot-card.paused .prot-card-status::after { content: ' (em pausa)'; font-size: 14px; font-weight: 400; opacity: .7; }
+
+    /* ── app-protect screen — Figma: Protecao-guardiao_screen-02 ── */
+    [data-s="app-protect"] {
+      background: #F3F2F6;
+    }
+    /* ── app-protect screen — Figma: Protecao-guardiao_screen-02 (100:2849) ── */
+
+    /* Sem header: padding-top 64px (44px status bar + 20px gap), laterais 20px */
+    [data-s="app-protect"] .app-scroll {
+      padding: 64px 20px 32px !important;
+      overflow-y: auto;
+    }
+    /* 3 secções com 32px de gap (Figma: Frame 70→Frame 69 = 32px) */
+    [data-s="app-protect"] .prot-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── Pause card — Figma: cornerRadius 20, padding 20px, fills white+stroke #F3F3F3 ── */
+    [data-s="app-protect"] .pause-card {
+      /* Figma: fill #FFFFFF 100% + fill #6581E8 20% por cima */
+      background:    linear-gradient(rgba(101,129,232,0.20), rgba(101,129,232,0.20)), #FFFFFF;
+      border-color:  rgba(101,129,232,0.20);
+      border-radius: 20px;
+      padding:       20px;
+      margin-bottom: 0 !important;
+    }
+    /* Título: Inter Bold 700, cor #26428B */
+    [data-s="app-protect"] .pause-card-title {
+      font-weight: 700;
+      color:       #26428B;
+    }
+    /* Descrição: Inter Medium 500, cor #26428B */
+    [data-s="app-protect"] .pause-card-desc {
+      font-weight: 500;
+      color:       #26428B;
+    }
+
+    /* ── Toggle card — Figma: cornerRadius 20, border #F3F3F3 ── */
+    [data-s="app-protect"] .prot-toggle-card {
+      background:    #FFFFFF;
+      border-radius: 20px;
+      border:        1px solid #F3F3F3;
+      overflow:      hidden;
+    }
+    /* Item padding 12px; gap ícone→texto 16px (Figma: icon 40px + 16px gap + text 213px) */
+    [data-s="app-protect"] .prot-toggle-card .tool-item {
+      padding:         12px !important;
+      gap:             16px;
+      border-bottom:   1px solid #E8E8E8;
+      justify-content: space-between;
+    }
+    [data-s="app-protect"] .prot-toggle-card .tool-item:last-child {
+      border-bottom: none;
+    }
+    /* tool-body como coluna com gap 4px (Figma: title→subtitle gap = 4px) */
+    [data-s="app-protect"] .tool-body {
+      display:        flex;
+      flex-direction: column;
+      gap:            4px;
+    }
+    /* Título: Inter 600, 14px */
+    [data-s="app-protect"] .tool-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size:   14px;
+      color:       #101B3B;
+      margin:      0;
+    }
+    /* Subtítulo toggle: Inter 500, 12px, opacity 0.6 (Figma: fontStyle "Medium") */
+    [data-s="app-protect"] .prot-toggle-card .tool-desc {
+      font-family: 'Inter', sans-serif;
+      font-size:   12px;
+      font-weight: 500;
+      line-height: 1.21;   /* ~14.5px */
+      color:       rgba(16,27,59,0.60);
+      margin:      0;
+    }
+
+    /* ── Toggle 36×20px, ON = #516AC7 ── */
+    [data-s="app-protect"] .toggle-track {
+      width:         36px;
+      height:        20px;
+      border-radius: 10px;
+    }
+    [data-s="app-protect"] .toggle-thumb {
+      width:  14px;
+      height: 14px;
+      top:    3px;
+      left:   3px;
+    }
+    [data-s="app-protect"] .toggle.on .toggle-track  { background: #26428B; }
+    [data-s="app-protect"] .toggle.on .toggle-thumb  { transform: translateX(16px); }
+
+    /* ── Nav cards — Figma: cornerRadius 20, gap 8px entre cards ── */
+    [data-s="app-protect"] .prot-nav-group {
+      display:        flex;
+      flex-direction: column;
+      gap:            8px;
+    }
+    [data-s="app-protect"] .prot-nav-card {
+      background:    #FFFFFF;
+      border-radius: 20px;
+      border:        1px solid #F3F3F3;
+      overflow:      hidden;
+    }
+    /* Nav item padding 12px; gap ícone→texto 16px (mesmo que toggle) */
+    [data-s="app-protect"] .prot-nav-card .tool-item {
+      padding:         12px !important;
+      gap:             16px;
+      border-bottom:   none;
+      cursor:          pointer;
+    }
+    /* Subtítulo nav: Inter 400 Regular, 14px, opacity 0.6 (Figma: fontStyle "Regular") */
+    [data-s="app-protect"] .prot-nav-card .tool-desc {
+      font-family: 'Inter', sans-serif;
+      font-size:   14px;
+      font-weight: 400;
+      line-height: 1.21;
+      color:       rgba(16,27,59,0.60);
+      margin:      0;
+    }
 
     /* ── Progress dots at bottom ── */
     .proto-dots {
@@ -1775,58 +1888,58 @@
       background: none;
     }
 
-    /* "Olá, Joana" — Neue Haas Grotesk, 20/24, 600, ls 0.02em */
+    /* "Olá, Joana" — Neue Haas Grotesk, 20/24, 500 Medium, #727272 */
     .home-greeting {
       font-family:    var(--font-display);
-      font-weight:    600;
+      font-weight:    500;
       font-size:      1.25rem;     /* 20px */
       line-height:    1.5rem;      /* 24px */
       letter-spacing: 0.02em;
-      color:          var(--home-ink);
+      color:          #727272;
     }
 
-    /* "Proteção ativa" — Neue Haas Grotesk, 20/24, 600, ls 0.02em, centrado */
+    /* "Proteção ativa" — Neue Haas Grotesk, 18/22, 600, ls 0.01em, centrado */
     .home-prot-title {
       font-family:    var(--font-display);
       font-weight:    600;
-      font-size:      1.25rem;     /* 20px */
-      line-height:    1.5rem;      /* 24px */
-      letter-spacing: 0.02em;
+      font-size:      1.125rem;    /* 18px — ligeiramente abaixo do greeting */
+      line-height:    1.375rem;    /* 22px */
+      letter-spacing: 0.01em;
       text-align:     center;
       color:          var(--home-ink);
     }
 
-    /* "Pode usar o telemóvel..." — Inter, 16/19, 500, centrado, 60% opacidade */
+    /* "Pode usar o telemóvel..." — Inter, 13/18, 400, centrado, 60% opacidade */
     .home-prot-sub {
       font-family: var(--font-body);
-      font-weight: 500;
-      font-size:   1rem;           /* 16px */
-      line-height: 1.1875rem;      /* 19px */
+      font-weight: 400;
+      font-size:   0.8125rem;      /* 13px — suporte, claramente secundário */
+      line-height: 1.125rem;       /* 18px */
       text-align:  center;
       color:       var(--home-ink-60);
     }
 
-    /* Rótulos das stat cards — Inter, 12/15, 600, ls 0.02em */
+    /* Rótulos das stat cards — Inter, 11/14, 600, ls 0.04em, uppercase */
     .home-stat-label {
       font-family:    var(--font-body);
       font-weight:    600;
-      font-size:      0.75rem;     /* 12px */
-      line-height:    0.9375rem;   /* 15px */
+      font-size:      0.6875rem;   /* 11px — label compacto */
+      line-height:    0.875rem;    /* 14px */
       letter-spacing: 0.02em;
       color:          var(--home-ink);
     }
 
-    /* Número das stat cards — Neue Haas Grotesk, 32/24, 500, ls 0.02em */
+    /* Número das stat cards — Neue Haas Grotesk, 26/30, 600, ls -0.01em */
     .home-stat-num {
       font-family:    var(--font-display);
-      font-weight:    500;
-      font-size:      2rem;        /* 32px */
-      line-height:    1.5rem;      /* 24px */
-      letter-spacing: 0.02em;
+      font-weight:    600;
+      font-size:      1.625rem;    /* 26px — proeminente mas equilibrado */
+      line-height:    1.875rem;    /* 30px */
+      letter-spacing: -0.01em;
       color:          var(--home-ink);
     }
 
-    /* "Atividade recente" — Inter, 16/19, 600, ls 0.02em */
+    /* "Atividade recente" — Inter, 16px, 600, ls 0.32 */
     .home-activity-title {
       font-family:    var(--font-body);
       font-weight:    600;
@@ -1836,88 +1949,58 @@
       color:          var(--home-ink);
     }
 
-    /* "Ver tudo" — Inter, 16/19, 500, muted */
+    /* "Ver tudo" — Inter, 16px, 500, #8A8A8A */
     .home-activity-link {
       font-family: var(--font-body);
       font-weight: 500;
       font-size:   1rem;           /* 16px */
       line-height: 1.1875rem;      /* 19px */
-      color:       var(--home-ink-muted);
+      color:       #8A8A8A;
       background:  none;
       border:      none;
       padding:     0;
       cursor:      pointer;
     }
 
-    /* Número do evento — Inter, 16/19, 600 */
-    .home-activity-num {
-      font-family: var(--font-body);
+    /* Número de telefone */
+    .home-activity-item__title {
+      font-family: 'Inter', sans-serif;
       font-weight: 600;
-      font-size:   1rem;           /* 16px */
-      line-height: 1.1875rem;      /* 19px */
-      color:       var(--home-ink);
+      font-size:   14px;
+      color:       #101B3B;
     }
 
-    /* Subtítulo do evento — Inter, 14/17, 400, 60% opacidade */
-    .home-activity-sub {
-      font-family: var(--font-body);
-      font-weight: 400;
-      font-size:   0.875rem;       /* 14px */
-      line-height: 1.0625rem;      /* 17px */
-      color:       var(--home-ink-60);
-    }
-
-    /* Badge "Agora" — Inter, 11px, 500, branco */
-    .home-activity-badge {
-      font-family: var(--font-body);
-      font-weight: 500;
-      font-size:   0.6875rem;      /* 11px */
-      line-height: 1;
-      text-align:  center;
-      color:       #FFFFFF;
-      background:    #F97316;
-      border-radius: 20px;
-      padding:       2px 8px;
+    /* Subtítulo (ex: "Chamada bloqueada") */
+    .home-activity-item__subtitle {
+      font-family:   'Inter', sans-serif;
+      font-weight:   400;
+      font-size:     14px;
+      color:         rgba(16, 27, 59, 0.6);
       white-space:   nowrap;
-      display:       inline-flex;
-      align-items:   center;
+      overflow:      hidden;
+      text-overflow: ellipsis;
     }
+
 
     /* Cores de fundo / bordas dos elementos estruturais */
     .screen[data-s="app-home"] { background: var(--home-bg); }
 
     .home-prot-card {
-      background:    #EEF2FF;
+      background:    var(--home-prot-grad);
       box-shadow:    none;
       border:        none;
-      border-radius: 20px;
+      border-radius: 32px;
     }
 
     .home-stat-card {
       background: var(--home-surface);
-      border:     none;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border:     1px solid #F3F3F3;
+      box-shadow: none;
     }
 
     .home-activity {
-      background: var(--home-surface);
-      border:     1px solid var(--home-border-card);
     }
 
-    .home-activity-item {
-      background: var(--home-surface);
-      border:     1px solid var(--home-border);
-      cursor:     pointer;
-    }
-
-    .home-activity-icon--blue { background: #1E2D4E; }
-    .home-activity-icon--dark { background: #1E2D4E; }
-    /* Override hardcoded SVG rect fills + radius */
-    .home-activity-icon {
-      border-radius: 12px;
-      overflow:      hidden;
-    }
-    .home-activity-icon rect { fill: #1E2D4E; }
 
     .home-avatar {
       background:    #C4A882;  /* cor placeholder até existir foto real */
@@ -1925,7 +2008,15 @@
       overflow:      hidden;
     }
 
-    .home-activity-arrow { opacity: 0.5; flex-shrink: 0; }
+    /* Seta — Figma: arrow_forward_ios 24×24px */
+    .home-activity-arrow {
+      flex-shrink: 0;
+      opacity:     1;
+      color:       rgba(16, 27, 59, 0.4);
+      width:       24px;
+      height:      24px;
+      margin-left: 8px;
+    }
 
 
     /* ── FASE 2: LAYOUT & ESPAÇAMENTOS ──────────────────────────── */
@@ -1976,11 +2067,11 @@
       content:       url('avatar.png');
     }
 
-    /* Frame 52 — conteúdo: coluna, gap 20px */
+    /* Frame 52 — conteúdo: coluna, gap 32px (Figma: Frame 70→Frame 69 = 32px) */
     .home-content {
       display:        flex;
       flex-direction: column;
-      gap:            20px;
+      gap:            16px;
       width:          100%;
     }
 
@@ -2016,8 +2107,8 @@
       width:  48px;
       height: 48px;
     }
-    .home-prot-icon svg > path:first-child  { fill: rgba(99, 102, 241, 0.35); }
-    .home-prot-icon svg > path:nth-child(2) { fill: #6366F1; }
+    .home-prot-icon svg > path:first-child  { fill: rgba(81, 106, 199, 0.4); }
+    .home-prot-icon svg > path:nth-child(2) { fill: #516AC7; }
 
     /* Frame 47 — info proteção: coluna centrada, gap 8px */
     .home-prot-info {
@@ -2036,7 +2127,7 @@
       width:      100%;
     }
 
-    /* Frame 16/17 — stat card: coluna, padding 16px 20px, gap 10px, radius 16px */
+    /* Frame 16/17 — stat card: coluna, padding 16px 20px, gap 10px, radius 20px */
     .home-stat-card {
       display:        flex;
       flex-direction: column;
@@ -2045,18 +2136,19 @@
       flex:           1;
       height:         106px;
       box-sizing:     border-box;
-      border-radius:  16px;
+      border-radius:  20px;
     }
 
     /* Frame 63 — atividade: coluna, padding 20px, gap 16px, radius 16px */
+    /* Frame 69 — secção atividade: sem padding (já tem margem do home-frame)
+       gap 16px entre cabeçalho e lista (Figma: Frame 49→Frame 60 = 16px) */
     .home-activity {
       display:        flex;
       flex-direction: column;
-      padding:        20px;
+      padding:        0;
       gap:            16px;
       width:          100%;
       box-sizing:     border-box;
-      border-radius:  16px;
     }
 
     /* Frame 49 — header atividade: row, space-between */
@@ -2068,53 +2160,177 @@
       width:           100%;
     }
 
-    /* Frame 60 — lista: coluna, gap 8px */
+    /* Lista sem bullets */
     .home-activity-list {
+      list-style:     none;
+      padding:        0;
+      margin:         0;
       display:        flex;
       flex-direction: column;
-      gap:            8px;
-      width:          100%;
+      gap:            12px;
     }
 
-    /* Frame 58/59 — item: row, space-between, padding 12px, radius 16px */
+    /* Card individual de cada item — Figma: stroke #F3F3F3, radius 20, padding 16px 12px */
     .home-activity-item {
-      display:         flex;
-      flex-direction:  row;
-      justify-content: space-between;
-      align-items:     center;
-      padding:         12px;
-      gap:             16px;
-      border-radius:   16px;
-      background:      #FFFFFF;
-      border:          1px solid #F3F3F3;
+      background-color: #FFFFFF;
+      border:           1px solid #F3F3F3;
+      border-radius:    20px;
+      padding:          16px 12px;
+      display:          flex;
+      align-items:      center;
+      justify-content:  space-between;
+      width:            100%;
+      box-sizing:       border-box;
+      cursor:           pointer;
     }
 
-    /* Frame 54 — ícone quadrado: 40×40, radius 8px */
-    .home-activity-icon {
-      display:         flex;
-      justify-content: center;
-      align-items:     center;
-      width:           40px;
-      height:          40px;
-      border-radius:   8px;
-      flex-shrink:     0;
+    /* Ícone circular */
+    .home-activity-item__icon {
+      width:            40px;
+      height:           40px;
+      min-width:        40px;
+      border-radius:    100px;
+      background-color: #E5E5E5;
+      display:          flex;
+      align-items:      center;
+      justify-content:  center;
+      flex-shrink:      0;
+      overflow:         hidden;
     }
 
-    /* Frame 53 — corpo: coluna, gap 4px, flex 1 */
-    .home-activity-body {
+    /* Corpo — gap ícone→texto: 16px (Figma: icon 40px + 16px + text 226px = 282px frame) */
+    .home-activity-item__body {
       display:        flex;
       flex-direction: column;
       gap:            4px;
       flex:           1;
       min-width:      0;
+      margin-left:    16px;
+      margin-right:   0;
+      overflow:       hidden;
     }
 
-    /* Frame 64 — linha número + badge: row, gap 12px, align center */
-    .home-activity-row {
-      display:     flex;
+    /* Linha com texto + badge */
+    .home-activity-item__meta {
+      display:        flex;
       flex-direction: row;
-      align-items: center;
-      gap:         12px;
+      align-items:    center;
+      gap:            8px;
+      flex-wrap:      nowrap;
+      overflow:       hidden;
+    }
+
+
+    /* ══ app-verificar — design system Home + Proteção ══ */
+
+    [data-s="app-verificar"] {
+      background: #F3F2F6;
+    }
+
+    /* Ocultar header antigo */
+    [data-s="app-verificar"] .app-header {
+      display: none;
+    }
+
+    /* Search bar — padding top 64px (44 status bar + 20 gap) */
+    [data-s="app-verificar"] .search-wrap {
+      padding: 64px 20px 0;
+      flex-shrink: 0;
+    }
+
+    /* Search box — card branco, border-radius 20px */
+    [data-s="app-verificar"] .search-box {
+      background:    #FFFFFF;
+      border:        1px solid #F3F3F3;
+      border-radius: 100px;
+      padding:       0 12px 0 16px;
+      height:        52px;
+      gap:           10px;
+      box-shadow:    none;
+    }
+    [data-s="app-verificar"] .search-box:focus-within {
+      border-color: rgba(38,66,139,0.3);
+    }
+    [data-s="app-verificar"] .search-input {
+      font-family: 'Inter', sans-serif;
+      font-size:   15px;
+      color:       #101B3B;
+    }
+    [data-s="app-verificar"] .search-input::placeholder {
+      color: rgba(16,27,59,0.4);
+    }
+
+    /* Botão Colar — cor do design system */
+    [data-s="app-verificar"] .paste-btn {
+      background:    rgba(38,66,139,0.10);
+      border-radius: 12px;
+      color:         #26428B;
+      font-weight:   600;
+      font-size:     13px;
+    }
+
+    /* Scroll area */
+    [data-s="app-verificar"] .app-scroll {
+      padding:    20px 20px 32px !important;
+      overflow-y: auto;
+    }
+
+    /* Secção "Recentes" — label */
+    [data-s="app-verificar"] .recents-label {
+      font-family:    'Inter', sans-serif;
+      font-size:      16px;
+      font-weight:    600;
+      color:          #101B3B;
+      letter-spacing: 0.02em;
+      padding:        0;
+      margin-bottom:  12px;
+    }
+
+    /* Lista recentes — remover estilo tabela antigo */
+    [data-s="app-verificar"] .recents-list {
+      background:    transparent !important;
+      border-top:    none !important;
+      border-bottom: none !important;
+      margin-bottom: 0 !important;
+      display:       flex;
+      flex-direction: column;
+      gap:           12px;
+    }
+
+    /* Cada item — card individual */
+    [data-s="app-verificar"] .recent-item {
+      background:    #FFFFFF !important;
+      border:        1px solid #F3F3F3 !important;
+      border-radius: 20px;
+      padding:       16px 12px;
+      gap:           12px;
+    }
+    [data-s="app-verificar"] .recent-item:last-child {
+      border-bottom: 1px solid #F3F3F3 !important;
+    }
+
+    /* Avatar circular */
+    [data-s="app-verificar"] .recent-avatar {
+      width:         40px;
+      height:        40px;
+      border-radius: 50%;
+      background:    #F0F0F0;
+    }
+
+    /* Número */
+    [data-s="app-verificar"] .recent-num-lg {
+      font-family:  'Inter', sans-serif;
+      font-size:    14px;
+      font-weight:  600;
+      color:        #101B3B;
+      margin-bottom: 2px;
+    }
+
+    /* Sub-texto */
+    [data-s="app-verificar"] .recent-sub {
+      font-family: 'Inter', sans-serif;
+      font-size:   12px;
+      color:       rgba(16,27,59,0.6);
     }
 
   </style>
@@ -2178,24 +2394,22 @@
       </div>
 
       <!-- Chips: absolute on screen, positions from Figma (scaled 390→375, 844→812) -->
-      <!-- Spam chip: Figma (99,185) → (95,178) -->
+      <!-- Spam chip: Group 8 — mensagem com X (âmbar) -->
       <div class="vp0-chip vp0-chip-spam">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M9 9l6 6M15 9l-6 6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <svg width="22" height="22" viewBox="10 10 24 24" fill="none">
+          <path d="M12 32V14C12 13.45 12.1958 12.9792 12.5875 12.5875C12.9792 12.1958 13.45 12 14 12H30C30.55 12 31.0208 12.1958 31.4125 12.5875C31.8042 12.9792 32 13.45 32 14V26C32 26.55 31.8042 27.0208 31.4125 27.4125C31.0208 27.8042 30.55 28 30 28H16L12 32ZM19.4 24L22 21.4L24.6 24L26 22.6L23.4 20L26 17.4L24.6 16L22 18.6L19.4 16L18 17.4L20.6 20L18 22.6L19.4 24Z" fill="#F8F6F7"/>
         </svg>
       </div>
-      <!-- Lock chip: Figma (276,279) → (265,268) -->
+      <!-- Lock chip: Group 7 — cadeado (navy escuro) -->
       <div class="vp0-chip vp0-chip-lock">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="2"/>
-          <path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <svg width="22" height="22" viewBox="11.1364 11.1364 26.7273 26.7273" fill="none">
+          <path d="M17.8182 35.6365C17.2057 35.6365 16.6813 35.4184 16.2452 34.9822C15.809 34.5461 15.5909 34.0217 15.5909 33.4092V22.2728C15.5909 21.6603 15.809 21.136 16.2452 20.6998C16.6813 20.2637 17.2057 20.0456 17.8182 20.0456H18.9318V17.8183C18.9318 16.2778 19.4747 14.9646 20.5605 13.8788C21.6463 12.793 22.9595 12.2501 24.5 12.2501C26.0405 12.2501 27.3537 12.793 28.4395 13.8788C29.5253 14.9646 30.0682 16.2778 30.0682 17.8183V20.0456H31.1818C31.7943 20.0456 32.3187 20.2637 32.7548 20.6998C33.191 21.136 33.4091 21.6603 33.4091 22.2728V33.4092C33.4091 34.0217 33.191 34.5461 32.7548 34.9822C32.3187 35.4184 31.7943 35.6365 31.1818 35.6365H17.8182ZM26.073 29.414C26.5092 28.9779 26.7273 28.4535 26.7273 27.841C26.7273 27.2285 26.5092 26.7042 26.073 26.268C25.6368 25.8318 25.1125 25.6138 24.5 25.6138C23.8875 25.6138 23.3632 25.8318 22.927 26.268C22.4908 26.7042 22.2727 27.2285 22.2727 27.841C22.2727 28.4535 22.4908 28.9779 22.927 29.414C23.3632 29.8502 23.8875 30.0683 24.5 30.0683C25.1125 30.0683 25.6368 29.8502 26.073 29.414ZM21.1591 20.0456H27.8409V17.8183C27.8409 16.8903 27.5161 16.1014 26.8665 15.4518C26.2169 14.8022 25.428 14.4774 24.5 14.4774C23.572 14.4774 22.7831 14.8022 22.1335 15.4518C21.4839 16.1014 21.1591 16.8903 21.1591 17.8183V20.0456Z" fill="#F8F6F7"/>
         </svg>
       </div>
-      <!-- Call chip: Figma (51,338) → (49,325) -->
+      <!-- Call chip: Group 5 — telefone (azul) -->
       <div class="vp0-chip vp0-chip-call">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 015.13 12.83a19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.36 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+        <svg width="22" height="22" viewBox="10 10 24 24" fill="none">
+          <path d="M26 21V19H28V21H26ZM26 17V12H28V17H26ZM29.95 31C27.8667 31 25.8083 30.5458 23.775 29.6375C21.7417 28.7292 19.8917 27.4417 18.225 25.775C16.5583 24.1083 15.2708 22.2583 14.3625 20.225C13.4542 18.1917 13 16.1333 13 14.05C13 13.75 13.1 13.5 13.3 13.3C13.5 13.1 13.75 13 14.05 13H18.1C18.3333 13 18.5417 13.0792 18.725 13.2375C18.9083 13.3958 19.0167 13.5833 19.05 13.8L19.7 17.3C19.7333 17.5667 19.725 17.7917 19.675 17.975C19.625 18.1583 19.5333 18.3167 19.4 18.45L16.975 20.9C17.3083 21.5167 17.7042 22.1125 18.1625 22.6875C18.6208 23.2625 19.125 23.8167 19.675 24.35C20.1917 24.8667 20.7333 25.3458 21.3 25.7875C21.8667 26.2292 22.4667 26.6333 23.1 27L25.45 24.65C25.6 24.5 25.7958 24.3875 26.0375 24.3125C26.2792 24.2375 26.5167 24.2167 26.75 24.25L30.2 24.95C30.4333 25.0167 30.625 25.1375 30.775 25.3125C30.925 25.4875 31 25.6833 31 25.9V29.95C31 30.25 30.9 30.5 30.7 30.7C30.5 30.9 30.25 31 29.95 31Z" fill="white"/>
         </svg>
       </div>
 
@@ -2372,7 +2586,7 @@
                    style: font-family 'Inter'; font-weight 600; font-size 12px;
                           line-height 15px; letter-spacing 0.02em; color #101B3B;
               -->
-              <span class="home-stat-label">Mensagens Filtradas</span>
+              <span class="home-stat-label">Mensagens<br>Filtradas</span>
               <!-- Figma: "0"
                    style: font-family 'Neue Haas Grotesk Display Pro'; font-weight 500;
                           font-size 32px; line-height 24px; letter-spacing 0.02em;
@@ -2426,125 +2640,43 @@
                           background #FFFFFF; border 1px solid #F3F3F3;
                           border-radius 16px; cursor pointer;
               -->
+              <!-- Item 1 — Chamada bloqueada -->
               <li class="home-activity-item" onclick="go(6)">
-
-                <!-- Figma: "Frame 54" — ícone azul
-                     style: display flex; justify-content center; align-items center;
-                            width 40px; height 40px;
-                            background #516AC7; border-radius 8px; flex-shrink 0;
-                -->
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="home-activity-icon" aria-hidden="true">
-                  <rect width="40" height="40" rx="8" fill="#516AC7"/>
-                  <mask id="mask-phone-icon" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="7" y="8" width="25" height="25">
-                    <rect x="7.5" y="8.5" width="24" height="24" fill="#D9D9D9"/>
-                  </mask>
-                  <g mask="url(#mask-phone-icon)">
-                    <path d="M27.3002 31.1701L21.8877 25.7696C20.3883 26.9856 18.7579 27.9452 16.9964 28.6484C15.2348 29.3517 13.4174 29.7034 11.5442 29.7034C11.1084 29.7034 10.7925 29.5846 10.5967 29.3471C10.4009 29.1095 10.3029 28.8125 10.3029 28.4561V24.3644C10.3029 24.0552 10.3979 23.7882 10.5877 23.5634C10.7775 23.3385 11.025 23.1932 11.3302 23.1274L14.6187 22.4451C14.8619 22.396 15.1409 22.417 15.4557 22.5084C15.7705 22.5995 16.0165 22.7318 16.1937 22.9051L18.5854 25.2789C18.8496 25.1195 19.1338 24.9361 19.4379 24.7286C19.7421 24.5213 20.0116 24.3212 20.2464 24.1284L8.88818 12.7701L10.3659 11.3104L28.7659 29.7104L27.3002 31.1701ZM16.4524 26.3464L14.8084 24.7144L12.5779 25.1964V27.3664C13.2413 27.3084 13.8964 27.1917 14.5432 27.0164C15.1899 26.841 15.8263 26.6177 16.4524 26.3464ZM24.8252 22.7941L23.2039 21.1969C23.4138 20.96 23.6271 20.6885 23.8439 20.3821C24.0606 20.0758 24.2318 19.7903 24.3577 19.5256L21.8969 17.1234C21.7118 16.9502 21.5892 16.7249 21.5292 16.4474C21.4692 16.1699 21.4619 15.9202 21.5072 15.6984L22.1512 12.3241C22.2212 12.007 22.3706 11.7565 22.5994 11.5726C22.8283 11.3888 23.1012 11.2969 23.4182 11.2969H27.4622C27.8258 11.2969 28.1237 11.4138 28.3557 11.6476C28.5875 11.8815 28.7034 12.1803 28.7034 12.5441C28.7034 14.3615 28.3604 16.145 27.6744 17.8946C26.9883 19.6443 26.0385 21.2775 24.8252 22.7941ZM25.4262 17.4044C25.698 16.7819 25.9058 16.1514 26.0497 15.5129C26.1935 14.8744 26.3031 14.2274 26.3784 13.5719H24.2144L23.7822 15.8084L25.4262 17.4044Z" fill="white"/>
-                  </g>
-                </svg>
-
-                <!-- Figma: "Frame 53" — corpo do evento
-                     style: display flex; flex-direction column; gap 4px;
-                            width 200px; height 40px; flex 1;
-                -->
-                <div class="home-activity-body">
-
-                  <!-- Figma: "Frame 64" — número + badge
-                       style: display flex; flex-direction row; align-items center;
-                              gap 12px; height 19px;
-                  -->
-                  <div class="home-activity-row">
-
-                    <!-- Figma: "+361 912 567 890"
-                         style: font-family 'Inter'; font-weight 600; font-size 16px;
-                                line-height 19px; color #101B3B;
-                    -->
-                    <span class="home-activity-num">+361 912 567 890</span>
-
-                    <!-- Figma: "Frame 56" — badge "Agora"
-                         style: display flex; justify-content center; align-items center;
-                                padding 3px 9px; width 47px; height 16px;
-                                background #E3AF64; border-radius 100px;
-                         Texto: font-family 'Inter'; font-weight 500; font-size 10px;
-                                line-height 12px; color #FFFFFF;
-                    -->
-                    <span class="home-activity-badge">Agora</span>
-
+                <div class="home-activity-item__icon" aria-hidden="true">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="20" fill="#E5E5E5"/>
+                    <mask id="mask0_100_2801" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="7" y="8" width="25" height="25"><rect x="7.5" y="8.5" width="24" height="24" fill="#D9D9D9"/></mask>
+                    <g mask="url(#mask0_100_2801)"><path d="M26.3202 28.5L21.9636 24.152C20.7567 25.1311 19.4444 25.9036 18.0265 26.4697C16.6085 27.036 15.1456 27.3191 13.6379 27.3191C13.2871 27.3191 13.0328 27.2235 12.8752 27.0323C12.7176 26.841 12.6388 26.6018 12.6388 26.315V23.0207C12.6388 22.7718 12.7152 22.5568 12.868 22.3758C13.0208 22.1948 13.22 22.0778 13.4656 22.0248L16.1126 21.4755C16.3083 21.4359 16.5329 21.4529 16.7863 21.5264C17.0397 21.5998 17.2377 21.7063 17.3803 21.8458L19.3055 23.7569C19.5181 23.6287 19.7469 23.481 19.9917 23.3139C20.2365 23.147 20.4535 22.9859 20.6425 22.8307L11.5 13.6861L12.6895 12.5109L27.5 27.3248L26.3202 28.5ZM17.5886 24.6164L16.2653 23.3025L14.47 23.6905V25.4376C15.0039 25.3909 15.5312 25.297 16.0518 25.1558C16.5723 25.0146 17.0846 24.8348 17.5886 24.6164ZM24.328 21.7565L23.023 20.4705C23.1919 20.2798 23.3636 20.0612 23.5382 19.8146C23.7126 19.5679 23.8504 19.3381 23.9517 19.125L21.971 17.1909C21.822 17.0515 21.7233 16.8701 21.675 16.6467C21.6267 16.4233 21.6208 16.2223 21.6573 16.0437L22.1757 13.327C22.232 13.0717 22.3523 12.87 22.5365 12.722C22.7207 12.574 22.9403 12.5 23.1955 12.5H26.4506C26.7433 12.5 26.983 12.5941 27.1698 12.7824C27.3564 12.9707 27.4497 13.2112 27.4497 13.5042C27.4497 14.9673 27.1736 16.4032 26.6214 17.8119C26.0691 19.2205 25.3046 20.5354 24.328 21.7565ZM24.8118 17.4172C25.0306 16.916 25.1979 16.4084 25.3136 15.8943C25.4294 15.3803 25.5176 14.8594 25.5783 14.3316H23.8364L23.4885 16.1322L24.8118 17.4172Z" fill="#101B3B"/></g>
+                  </svg>
+                </div>
+                <div class="home-activity-item__body">
+                  <span class="home-activity-item__title">+361 912 567 890</span>
+                  <div class="home-activity-item__meta">
+                    <span class="home-activity-item__subtitle">Chamada bloqueada</span>
                   </div>
-                  <!-- /home-activity-row -->
-
-                  <!-- Figma: "Chamada bloqueada"
-                       style: font-family 'Inter'; font-weight 400; font-size 14px;
-                              line-height 17px; color rgba(16,27,59,.6);
-                  -->
-                  <span class="home-activity-sub">Chamada bloqueada</span>
-
                 </div>
-                <!-- /home-activity-body -->
-
-                <!-- Figma: "arrow_forward_ios"
-                     style: width 9.81px; height 16.67px; flex-shrink 0; color #101B3B; opacity .3;
-                -->
                 <svg class="home-activity-arrow" width="10" height="17" viewBox="0 0 10 17" fill="none" aria-hidden="true">
                   <path d="M2 2l6 6.5-6 6.5" stroke="#101B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-
               </li>
-              <!-- /item chamada -->
 
-              <!-- Figma: "Frame 59" — Mensagem suspeita
-                   style: display flex; flex-direction row; justify-content space-between;
-                          align-items center; padding 12px; gap 46px;
-                          background #FFFFFF; border 1px solid #F3F3F3;
-                          border-radius 16px; cursor pointer;
-              -->
+              <!-- Item 2 — Mensagem suspeita -->
               <li class="home-activity-item" onclick="go(7)">
-
-                <!-- Figma: "Frame 54" — ícone dark blue
-                     style: display flex; justify-content center; align-items center;
-                            width 40px; height 40px;
-                            background #101B3B; border-radius 8px; flex-shrink 0;
-                -->
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="home-activity-icon" aria-hidden="true">
-                  <rect width="40" height="40" rx="8" fill="#101B3B"/>
-                  <mask id="mask-mail-icon" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="7" y="8" width="25" height="25">
-                    <rect x="7.5" y="8.5" width="24" height="24" fill="#D9D9D9"/>
-                  </mask>
-                  <g mask="url(#mask-mail-icon)">
-                    <path d="M19.5001 19.5719L27.4284 14.5719H11.5719L19.5001 19.5719ZM11.5719 28.7034C10.9422 28.7034 10.4056 28.4816 9.96213 28.0381C9.51862 27.5946 9.29688 27.058 9.29688 26.4284V14.5719C9.29688 13.9422 9.51862 13.4056 9.96213 12.9621C10.4056 12.5186 10.9422 12.2969 11.5719 12.2969H27.4284C28.058 12.2969 28.5946 12.5186 29.0381 12.9621C29.4816 13.4056 29.7034 13.9422 29.7034 14.5719V21.4524H27.4284V16.7571L19.5001 21.7571L11.5719 16.7571V26.4284H20.3626V28.7034H11.5719ZM25.4051 31.6234L23.5176 30.5459L24.6376 28.6436H22.4224V26.4881H24.6376L23.5176 24.5859L25.4051 23.5084L26.5001 25.4104L27.5951 23.5084L29.4826 24.5859L28.3626 26.4881H30.5779V28.6436H28.3626L29.4826 30.5459L27.5951 31.6234L26.5001 29.7214L25.4051 31.6234Z" fill="white"/>
-                  </g>
-                </svg>
-
-                <!-- Figma: "Frame 53" — corpo do evento
-                     style: display flex; flex-direction column; gap 4px;
-                            width 213px; height 40px; flex 1;
-                -->
-                <div class="home-activity-body">
-
-                  <!-- Figma: "+351 960 123 456"
-                       style: font-family 'Inter'; font-weight 600; font-size 16px;
-                              line-height 19px; color #101B3B;
-                  -->
-                  <span class="home-activity-num">+351 960 123 456</span>
-
-                  <!-- Figma: "Mensagem suspeita detetada"
-                       style: font-family 'Inter'; font-weight 400; font-size 14px;
-                              line-height 17px; color rgba(16,27,59,.6);
-                  -->
-                  <span class="home-activity-sub">Mensagem suspeita detetada</span>
-
+                <div class="home-activity-item__icon" aria-hidden="true">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="20" fill="#E5E5E5"/>
+                    <mask id="mask0_100_2816" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="7" y="8" width="25" height="25"><rect x="7.5" y="8.5" width="24" height="24" fill="#D9D9D9"/></mask>
+                    <g mask="url(#mask0_100_2816)"><path d="M19.1302 18.5228L25.8361 14.3834H12.4243L19.1302 18.5228ZM12.4243 26.0826C11.8917 26.0826 11.4378 25.899 11.0627 25.5318C10.6876 25.1647 10.5 24.7205 10.5 24.1992V14.3834C10.5 13.8621 10.6876 13.4179 11.0627 13.0507C11.4378 12.6836 11.8917 12.5 12.4243 12.5H25.8361C26.3687 12.5 26.8225 12.6836 27.1976 13.0507C27.5728 13.4179 27.7603 13.8621 27.7603 14.3834V20.0796H25.8361V16.1925L19.1302 20.3319L12.4243 16.1925V24.1992H19.8597V26.0826H12.4243ZM24.1248 28.5L22.5283 27.608L23.4756 26.0331H21.6019V24.2486H23.4756L22.5283 22.6738L24.1248 21.7818L25.0509 23.3564L25.9771 21.7818L27.5736 22.6738L26.6263 24.2486H28.5V26.0331H26.6263L27.5736 27.608L25.9771 28.5L25.0509 26.9254L24.1248 28.5Z" fill="#101B3B"/></g>
+                  </svg>
                 </div>
-                <!-- /home-activity-body -->
-
-                <!-- Figma: "arrow_forward_ios"
-                     style: width 9.81px; height 16.67px; flex-shrink 0; color #101B3B; opacity .3;
-                -->
+                <div class="home-activity-item__body">
+                  <span class="home-activity-item__title">+351 960 123 456</span>
+                  <span class="home-activity-item__subtitle">Mensagem suspeita detetada</span>
+                </div>
                 <svg class="home-activity-arrow" width="10" height="17" viewBox="0 0 10 17" fill="none" aria-hidden="true">
                   <path d="M2 2l6 6.5-6 6.5" stroke="#101B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-
               </li>
-              <!-- /item mensagem -->
 
             </ul>
             <!-- /home-activity-list -->
@@ -2563,101 +2695,106 @@
 
     <!-- ══ APP: PROTECÇÃO ══ -->
     <div class="screen app-screen" data-s="app-protect">
-      <div class="app-header" style="padding-bottom:10px;">
-        <div class="app-greeting">Proteção</div>
-      </div>
 
-      <div class="app-scroll" style="padding:0 0 90px; overflow-y:auto;">
+      <div class="app-scroll">
 
-        <!-- Toggles section -->
-        <div class="tools-list" style="margin-bottom:16px;">
-          <div class="tool-item">
-            <div class="tool-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="7" stroke="#555" stroke-width="1.5" fill="none"/>
-                <path d="M7 13l6-6M7 7l6 6" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
+        <div class="prot-sections">
+
+          <!-- ── Pausa temporária card (Figma 95:2323) ── -->
+          <div class="pause-card">
+            <p class="pause-card-title">Pausa temporária</p>
+            <p class="pause-card-desc">Desliga temporariamente a proteção. A app reativa automaticamente quando o tempo terminar</p>
+            <div id="pauseDefault">
+              <button class="pause-btn" onclick="showSheet('pause-pick')">Pausar proteção</button>
             </div>
-            <div class="tool-body">
-              <div class="tool-title">Recusar números anónimos</div>
-              <div class="tool-desc">Chamadas de número oculto são recusadas antes de o telefone tocar</div>
+            <div id="pauseActive" style="display:none;">
+              <div class="pause-countdown">
+                <div>
+                  <div class="pause-timer-label">Proteção reativa em</div>
+                  <div class="pause-timer-value" id="pauseDisplay">2h</div>
+                </div>
+                <button class="pause-resume-btn" onclick="resumeProtection()">Reativar agora</button>
+              </div>
             </div>
-            <label class="toggle on" onclick="this.classList.toggle('on')" style="flex-shrink:0;">
-              <input type="checkbox" checked tabindex="-1">
-              <span class="toggle-track"><span class="toggle-thumb"></span></span>
-            </label>
           </div>
-          <div class="tool-item">
-            <div class="tool-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="7" stroke="#555" stroke-width="1.5" fill="none"/>
-                <path d="M7 10h6M10 7l3 3-3 3" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+
+          <!-- ── Toggles card ── -->
+          <div class="prot-toggle-card">
+            <div class="tool-item">
+              <div class="tool-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="20" fill="#F0F0F0"/><mask id="mask0_100_2889" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="7" y="8" width="25" height="25"><rect x="7.5" y="8.5" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mask0_100_2889)"><path d="M15.3 26.5C14.45 26.5 13.6375 26.35 12.8625 26.05C12.0875 25.75 11.3917 25.3083 10.775 24.725C9.975 23.975 9.39583 23.0875 9.0375 22.0625C8.67917 21.0375 8.5 19.975 8.5 18.875C8.5 17.575 8.81667 16.5208 9.45 15.7125C10.0833 14.9042 11.0083 14.5 12.225 14.5C12.4583 14.5 12.6792 14.5208 12.8875 14.5625C13.0958 14.6042 13.3083 14.6667 13.525 14.75L19.5 16.975L25.475 14.75C25.6917 14.6667 25.9042 14.6042 26.1125 14.5625C26.3208 14.5208 26.5417 14.5 26.775 14.5C27.9917 14.5 28.9167 14.9042 29.55 15.7125C30.1833 16.5208 30.5 17.575 30.5 18.875C30.5 19.975 30.3208 21.0375 29.9625 22.0625C29.6042 23.0875 29.025 23.975 28.225 24.725C27.6083 25.3083 26.9125 25.75 26.1375 26.05C25.3625 26.35 24.55 26.5 23.7 26.5C22.6 26.5 21.6667 26.25 20.9 25.75L19.75 25H19.25L18.1 25.75C17.3333 26.25 16.4 26.5 15.3 26.5ZM15.3 24.5C15.9167 24.5 16.4917 24.3542 17.025 24.0625C17.5583 23.7708 18.05 23.4167 18.5 23H20.5C20.95 23.4167 21.4417 23.7708 21.975 24.0625C22.5083 24.3542 23.0833 24.5 23.7 24.5C24.3 24.5 24.8792 24.3958 25.4375 24.1875C25.9958 23.9792 26.4917 23.6583 26.925 23.225C27.4917 22.6583 27.8958 21.9917 28.1375 21.225C28.3792 20.4583 28.5 19.675 28.5 18.875C28.5 18.1917 28.3583 17.6208 28.075 17.1625C27.7917 16.7042 27.3417 16.4833 26.725 16.5C26.675 16.5 26.4917 16.5333 26.175 16.6L19.5 19.1L12.825 16.6C12.7417 16.5667 12.6542 16.5417 12.5625 16.525C12.4708 16.5083 12.375 16.5 12.275 16.5C11.6583 16.5 11.2083 16.725 10.925 17.175C10.6417 17.625 10.5 18.1917 10.5 18.875C10.5 19.6917 10.6208 20.4833 10.8625 21.25C11.1042 22.0167 11.5167 22.6833 12.1 23.25C12.5333 23.6667 13.025 23.9792 13.575 24.1875C14.125 24.3958 14.7 24.5 15.3 24.5ZM16.525 23C17.1417 23 17.625 22.8625 17.975 22.5875C18.325 22.3125 18.5 21.9333 18.5 21.45C18.5 20.6333 17.9625 19.8542 16.8875 19.1125C15.8125 18.3708 14.675 18 13.475 18C12.8583 18 12.375 18.1375 12.025 18.4125C11.675 18.6875 11.5 19.0667 11.5 19.55C11.5 20.3667 12.0375 21.1458 13.1125 21.8875C14.1875 22.6292 15.325 23 16.525 23ZM16.375 21.5C15.7417 21.5 15.0542 21.2917 14.3125 20.875C13.5708 20.4583 13.1333 20.0333 13 19.6C13.0833 19.5667 13.1792 19.5375 13.2875 19.5125C13.3958 19.4875 13.5083 19.475 13.625 19.475C14.2583 19.475 14.9458 19.6875 15.6875 20.1125C16.4292 20.5375 16.8667 20.9667 17 21.4C16.9167 21.4333 16.8208 21.4583 16.7125 21.475C16.6042 21.4917 16.4917 21.5 16.375 21.5ZM22.475 23.025C23.675 23.025 24.8125 22.65 25.8875 21.9C26.9625 21.15 27.5 20.3667 27.5 19.55C27.5 19.0667 27.3292 18.6833 26.9875 18.4C26.6458 18.1167 26.1583 17.975 25.525 17.975C24.325 17.975 23.1875 18.35 22.1125 19.1C21.0375 19.85 20.5 20.6333 20.5 21.45C20.5 21.9333 20.675 22.3167 21.025 22.6C21.375 22.8833 21.8583 23.025 22.475 23.025ZM22.625 21.5C22.5083 21.5 22.4 21.4917 22.3 21.475C22.2 21.4583 22.1083 21.4333 22.025 21.4C22.1583 20.9667 22.5958 20.5417 23.3375 20.125C24.0792 19.7083 24.7667 19.5 25.4 19.5C25.5167 19.5 25.625 19.5083 25.725 19.525C25.825 19.5417 25.9167 19.5667 26 19.6C25.8667 20.0333 25.4292 20.4583 24.6875 20.875C23.9458 21.2917 23.2583 21.5 22.625 21.5Z" fill="#101B3B"/></g></svg>
+              </div>
+              <div class="tool-body">
+                <div class="tool-title">Recusar números anónimos</div>
+                <div class="tool-desc">Chamadas de número oculto são recusadas antes de o telefone tocar</div>
+              </div>
+              <label class="toggle on" onclick="this.classList.toggle('on')" style="flex-shrink:0;">
+                <input type="checkbox" checked tabindex="-1">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
             </div>
-            <div class="tool-body">
-              <div class="tool-title">Recusar chamadas do estrangeiro</div>
-              <div class="tool-desc">Filtrar chamadas de números de outros países</div>
+            <div class="tool-item">
+              <div class="tool-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="20" fill="#F0F0F0"/><mask id="mask0_100_2902" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="7" y="8" width="25" height="25"><rect x="7.5" y="8.5" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mask0_100_2902)"><path d="M26.3384 28.5L25.3642 27.5235H23.0035V26.0211H23.8653L22.3665 24.5188H15.5094V23.0915C15.5094 22.8286 15.5749 22.5814 15.7061 22.3498C15.8372 22.1182 16.0152 21.9335 16.24 21.7958C16.6272 21.5704 17.0301 21.3795 17.4485 21.223C17.8669 21.0665 18.2947 20.9507 18.7319 20.8756L14.0105 16.1432V17.007H12.5117V14.6408L11.5 13.6268L12.5679 12.5563L27.4063 27.4296L26.3384 28.5ZM20.8677 23.0164L20.1183 22.2653C19.5562 22.2653 19.0254 22.3279 18.5258 22.4531C18.0262 22.5782 17.5578 22.766 17.1206 23.0164H20.8677ZM22.2541 17.7582C22.2541 18.0837 22.1885 18.3873 22.0574 18.669C21.9262 18.9507 21.7545 19.198 21.5422 19.4108L20.4742 18.3404C20.5617 18.2778 20.6304 18.1964 20.6803 18.0962C20.7303 17.9961 20.7553 17.8834 20.7553 17.7582C20.7553 17.5454 20.6835 17.367 20.5398 17.223C20.3962 17.079 20.2182 17.007 20.0059 17.007C19.881 17.007 19.7685 17.0321 19.6686 17.0822C19.5687 17.1322 19.4875 17.2011 19.4251 17.2887L18.3571 16.2183C18.5695 16.0055 18.8162 15.8333 19.0972 15.7019C19.3782 15.5704 19.6811 15.5047 20.0059 15.5047C20.6304 15.5047 21.1612 15.7238 21.5984 16.162C22.0355 16.6002 22.2541 17.1322 22.2541 17.7582ZM27.5 23.0164V25.3826L26.0012 23.8803V23.0164H27.5ZM14.0105 27.5235C13.5984 27.5235 13.2455 27.3764 12.952 27.0822C12.6585 26.788 12.5117 26.4343 12.5117 26.0211V23.0164H14.0105V26.0211H17.0082V27.5235H14.0105ZM26.0012 17.007V14.0023H23.0035V12.5H26.0012C26.4133 12.5 26.7662 12.6471 27.0597 12.9413C27.3532 13.2355 27.5 13.5892 27.5 14.0023V17.007H26.0012ZM17.0082 12.5V14.0023H16.1464L14.6475 12.5H17.0082Z" fill="#101B3B"/></g></svg>
+              </div>
+              <div class="tool-body">
+                <div class="tool-title">Recusar chamadas do estrangeiro</div>
+                <div class="tool-desc">Filtrar chamadas de números de outros países</div>
+              </div>
+              <label class="toggle" onclick="this.classList.toggle('on')" style="flex-shrink:0;">
+                <input type="checkbox" tabindex="-1">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
             </div>
-            <label class="toggle" onclick="this.classList.toggle('on')" style="flex-shrink:0;">
-              <input type="checkbox" tabindex="-1">
-              <span class="toggle-track"><span class="toggle-thumb"></span></span>
-            </label>
+            <div class="tool-item">
+              <div class="tool-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="20" fill="#F0F0F0"/><mask id="mask0_100_2915" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="7" y="8" width="25" height="25"><rect x="7.5" y="8.5" width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mask0_100_2915)"><path d="M26.5667 28.5C24.7148 28.5 22.8852 28.0963 21.0778 27.2889C19.2704 26.4815 17.6259 25.337 16.1444 23.8556C14.663 22.3741 13.5185 20.7296 12.7111 18.9222C11.9037 17.1148 11.5 15.2852 11.5 13.4333C11.5 13.1667 11.5889 12.9444 11.7667 12.7667C11.9444 12.5889 12.1667 12.5 12.4333 12.5H16.0333C16.2407 12.5 16.4259 12.5704 16.5889 12.7111C16.7519 12.8519 16.8481 13.0185 16.8778 13.2111L17.4556 16.3222C17.4852 16.5593 17.4778 16.7593 17.4333 16.9222C17.3889 17.0852 17.3074 17.2259 17.1889 17.3444L15.0333 19.5222C15.3296 20.0704 15.6815 20.6 16.0889 21.1111C16.4963 21.6222 16.9444 22.1148 17.4333 22.5889C17.8926 23.0481 18.3741 23.4741 18.8778 23.8667C19.3815 24.2593 19.9148 24.6185 20.4778 24.9444L22.5667 22.8556C22.7 22.7222 22.8741 22.6222 23.0889 22.5556C23.3037 22.4889 23.5148 22.4704 23.7222 22.5L26.7889 23.1222C26.9963 23.1667 27.1667 23.2704 27.3 23.4333C27.4333 23.5963 27.5 23.7741 27.5 23.9667V27.5667C27.5 27.8333 27.4111 28.0556 27.2333 28.2333C27.0556 28.4111 26.8333 28.5 26.5667 28.5ZM14.1889 17.8333L15.6556 16.3667L15.2778 14.2778H13.3C13.3741 14.8852 13.4778 15.4852 13.6111 16.0778C13.7444 16.6704 13.937 17.2556 14.1889 17.8333ZM22.1444 25.7889C22.7222 26.0407 23.3111 26.2407 23.9111 26.3889C24.5111 26.537 25.1148 26.6333 25.7222 26.6778V24.7222L23.6333 24.3L22.1444 25.7889ZM22.5222 18.7222L21.2778 17.4778L23.1222 15.6111L21.2778 13.7667L22.5222 12.5L24.3889 14.3667L26.2333 12.5L27.5 13.7667L25.6333 15.6111L27.5 17.4778L26.2333 18.7222L24.3889 16.8778L22.5222 18.7222Z" fill="#101B3B"/></g></svg>
+              </div>
+              <div class="tool-body">
+                <div class="tool-title">Recusar números desconhecidos</div>
+                <div class="tool-desc">Avisar quando liga alguém fora dos seus contactos</div>
+              </div>
+              <label class="toggle on" onclick="this.classList.toggle('on')" style="flex-shrink:0;">
+                <input type="checkbox" checked tabindex="-1">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
           </div>
-          <div class="tool-item">
-            <div class="tool-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="8" r="4" stroke="#555" stroke-width="1.5" fill="none"/>
-                <path d="M3 18c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="#555" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                <path d="M14 5l2 2-2 2" stroke="#555" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+
+          <!-- ── Navigation rows — individual cards ── -->
+          <div class="prot-nav-group">
+            <div class="prot-nav-card">
+              <div class="tool-item">
+                <div class="tool-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="20" fill="#F0F0F0"/><mask id="mask0_100_2927" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-1" y="0" width="41" height="41"><rect x="-0.5" y="0.5" width="40" height="40" rx="20" fill="#F0F0F0"/></mask><g mask="url(#mask0_100_2927)"><path d="M11.495 24.5V18.3153H9.5V16.5H13.237V24.5H11.495ZM15.8418 24.5V20.9912C15.8418 20.6297 15.953 20.3332 16.1755 20.1016C16.3982 19.87 16.6839 19.7542 17.0327 19.7542H19.8906V18.3153H15.8418V16.5H20.4489C20.7918 16.5 21.0755 16.6157 21.2998 16.8471C21.5242 17.0787 21.6364 17.3758 21.6364 17.7386V20.0069C21.6364 20.3696 21.5243 20.6668 21.3002 20.8984C21.0762 21.13 20.7918 21.2458 20.447 21.2458H17.5876V22.6847H21.6364V24.5H15.8418ZM23.7054 24.5V22.6847H27.7543V21.2458H24.9707V19.7542H27.7543V18.3153H23.7054V16.5H28.3119C28.6586 16.5 28.9433 16.6157 29.166 16.8471C29.3887 17.0787 29.5 17.3752 29.5 17.7366V23.2634C29.5 23.6248 29.3887 23.9213 29.166 24.1529C28.9433 24.3843 28.6586 24.5 28.3119 24.5H23.7054Z" fill="#101B3B"/></g></svg>
+                </div>
+                <div class="tool-body">
+                  <div class="tool-title">Bloquear por prefixo</div>
+                  <div class="tool-desc">Bloqueie números com um determinado início</div>
+                </div>
+                <svg width="10" height="17" viewBox="0 0 10 17" fill="none" style="flex-shrink:0;" aria-hidden="true">
+                  <path d="M2 2l6 6.5-6 6.5" stroke="rgba(16,27,59,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
-            <div class="tool-body">
-              <div class="tool-title">Recusar números desconhecidos</div>
-              <div class="tool-desc">Avisar quando liga alguém fora dos seus contactos</div>
+            <div class="prot-nav-card">
+              <div class="tool-item">
+                <div class="tool-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="20" fill="#DE001E"/><path d="M16.38 27.87C15.4067 27.45 14.56 26.88 13.84 26.16C13.12 25.44 12.55 24.5933 12.13 23.62C11.71 22.6467 11.5 21.6067 11.5 20.5C11.5 19.3933 11.71 18.3533 12.13 17.38C12.55 16.4067 13.12 15.56 13.84 14.84C14.56 14.12 15.4067 13.55 16.38 13.13C17.3533 12.71 18.3933 12.5 19.5 12.5C20.6067 12.5 21.6467 12.71 22.62 13.13C23.5933 13.55 24.44 14.12 25.16 14.84C25.88 15.56 26.45 16.4067 26.87 17.38C27.29 18.3533 27.5 19.3933 27.5 20.5C27.5 21.6067 27.29 22.6467 26.87 23.62C26.45 24.5933 25.88 25.44 25.16 26.16C24.44 26.88 23.5933 27.45 22.62 27.87C21.6467 28.29 20.6067 28.5 19.5 28.5C18.3933 28.5 17.3533 28.29 16.38 27.87ZM19.5 26.9C20.22 26.9 20.9133 26.7833 21.58 26.55C22.2467 26.3167 22.86 25.98 23.42 25.54L14.46 16.58C14.02 17.14 13.6833 17.7533 13.45 18.42C13.2167 19.0867 13.1 19.78 13.1 20.5C13.1 22.2867 13.72 23.8 14.96 25.04C16.2 26.28 17.7133 26.9 19.5 26.9ZM24.54 24.42C24.98 23.86 25.3167 23.2467 25.55 22.58C25.7833 21.9133 25.9 21.22 25.9 20.5C25.9 18.7133 25.28 17.2 24.04 15.96C22.8 14.72 21.2867 14.1 19.5 14.1C18.78 14.1 18.0867 14.2167 17.42 14.45C16.7533 14.6833 16.14 15.02 15.58 15.46L24.54 24.42Z" fill="white"/></svg>
+                </div>
+                <div class="tool-body">
+                  <div class="tool-title">Lista de bloqueados</div>
+                  <div class="tool-desc">Números que bloqueou manualmente</div>
+                </div>
+                <svg width="10" height="17" viewBox="0 0 10 17" fill="none" style="flex-shrink:0;" aria-hidden="true">
+                  <path d="M2 2l6 6.5-6 6.5" stroke="rgba(16,27,59,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
-            <label class="toggle on" onclick="this.classList.toggle('on')" style="flex-shrink:0;">
-              <input type="checkbox" checked tabindex="-1">
-              <span class="toggle-track"><span class="toggle-thumb"></span></span>
-            </label>
           </div>
+
         </div>
-
-        <!-- Navigation rows -->
-        <div class="tools-list">
-          <div class="tool-item" style="cursor:pointer;">
-            <div class="tool-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <rect x="3" y="4" width="14" height="3" rx="1.5" fill="#555"/>
-                <rect x="3" y="9" width="10" height="3" rx="1.5" fill="#555"/>
-                <rect x="3" y="14" width="6" height="3" rx="1.5" fill="#555"/>
-              </svg>
-            </div>
-            <div class="tool-body">
-              <div class="tool-title">Bloquear por prefixo</div>
-              <div class="tool-desc">Bloqueie números com um determinado início</div>
-            </div>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="opacity:.3;flex-shrink:0;">
-              <path d="M5 3l4 4-4 4" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="tool-item" style="cursor:pointer;">
-            <div class="tool-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M4 5h12v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" stroke="#555" stroke-width="1.5" fill="none"/>
-                <path d="M2 5h16" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M8 3h4" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M8 9v4M12 9v4" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="tool-body">
-              <div class="tool-title">Lista de bloqueados</div>
-              <div class="tool-desc">Números que bloqueou manualmente</div>
-            </div>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="opacity:.3;flex-shrink:0;">
-              <path d="M5 3l4 4-4 4" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
+        <!-- /prot-sections -->
 
       </div>
     </div>
@@ -2687,7 +2824,7 @@
         </div>
       </div>
 
-      <div class="app-scroll" style="padding:0 0 90px; overflow-y:auto;">
+      <div class="app-scroll" style="padding:0 0 32px; overflow-y:auto;">
         <!-- Recents -->
         <div class="recents-label">Recentes</div>
         <div class="recents-list" style="background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:24px;">
@@ -2851,7 +2988,7 @@
           <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.07em;margin-bottom:10px;">MOTIVO DO BLOQUEIO</div>
           <div style="background:var(--surface-2);border:1.5px solid rgba(0,0,0,.07);border-radius:14px;padding:14px 16px;">
             <div style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:6px;">Número reportado como suspeito</div>
-            <div style="font-size:12px;color:var(--text-3);line-height:1.55;">Identificado por <strong>247 utilizadores</strong> como número de burla. Padrão de chamadas em massa detetado a partir deste número.</div>
+            <div style="font-size:12px;color:var(--text-3);line-height:1.55;">Este número apresenta características associadas a chamadas fraudulentas. Recomendamos que não atenda nem devolva a chamada.</div>
           </div>
         </div>
 
@@ -2864,7 +3001,7 @@
 
         <!-- Actions -->
         <div style="padding:0 20px 100px;display:flex;flex-direction:column;gap:10px;">
-          <button class="btn-blue">Denunciar este número</button>
+          <button class="btn-blue">Bloquear este número</button>
           <button class="btn-link" style="font-size:13px;color:var(--text-3);">Ligar na mesma</button>
         </div>
       </div>
@@ -2931,11 +3068,6 @@
           </div>
         </div>
 
-        <!-- Actions -->
-        <div style="padding:0 20px 100px;display:flex;flex-direction:column;gap:10px;">
-          <button class="btn-blue">Denunciar como fraude</button>
-          <button class="btn-link" style="font-size:13px;color:var(--text-3);">Marcar como segura</button>
-        </div>
       </div>
     </div>
 
@@ -2956,7 +3088,13 @@
     <!-- ══ APP: PERFIL ══ -->
     <div class="screen app-screen" data-s="app-perfil">
       <div class="app-header">
+        <button class="detail-back" onclick="go(2)">
+          <svg width="9" height="16" viewBox="0 0 9 16" fill="none" aria-hidden="true">
+            <path d="M7.5 1.5L1.5 8l6 6.5" stroke="#101B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
         <div class="app-greeting">Perfil</div>
+        <div style="width:32px;"></div>
       </div>
       <div class="app-scroll" style="padding-top:8px;">
 
@@ -2974,31 +3112,16 @@
           </div>
         </div>
 
-        <!-- Pause protection card -->
-        <div class="pause-card">
-          <div class="pause-card-header">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-              <circle cx="7.5" cy="7.5" r="6.5" stroke="#555" stroke-width="1.4"/>
-              <path d="M7.5 4v3.5l2.5 2" stroke="#555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <div class="pause-card-title">Pausa temporária</div>
-          </div>
-          <p class="pause-card-desc">Desliga a proteção por um período. A app reativa automaticamente quando o tempo terminar.</p>
-          <div id="pauseDefault">
-            <button class="pause-btn" onclick="showSheet('pause-pick')">Pausar proteção</button>
-          </div>
-          <div id="pauseActive" style="display:none;">
-            <div class="pause-countdown">
-              <div>
-                <div class="pause-timer-label">Proteção reativa em</div>
-                <div class="pause-timer-value" id="pauseDisplay">30:00</div>
-              </div>
-              <button class="pause-resume-btn" onclick="resumeProtection()">Reativar agora</button>
-            </div>
+        <!-- Settings rows -->
+        <div style="background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:12px;">
+          <div style="padding:15px 16px;font-size:14px;font-weight:600;color:var(--text-1);display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="goApp(3)">
+            <span style="display:flex;align-items:center;gap:10px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11.675 21.8754C11.575 21.8587 11.475 21.8337 11.375 21.8004C9.125 21.0504 7.33333 19.6629 6 17.6379C4.66667 15.6129 4 13.4337 4 11.1004V6.37539C4 5.95872 4.12083 5.58372 4.3625 5.25039C4.60417 4.91706 4.91667 4.67539 5.3 4.52539L11.3 2.27539C11.5333 2.19206 11.7667 2.15039 12 2.15039C12.2333 2.15039 12.4667 2.19206 12.7 2.27539L18.7 4.52539C19.0833 4.67539 19.3958 4.91706 19.6375 5.25039C19.8792 5.58372 20 5.95872 20 6.37539V11.1004C20 13.4337 19.3333 15.6129 18 17.6379C16.6667 19.6629 14.875 21.0504 12.625 21.8004C12.525 21.8337 12.425 21.8587 12.325 21.8754C12.225 21.8921 12.1167 21.9004 12 21.9004C11.8833 21.9004 11.775 21.8921 11.675 21.8754ZM12 19.9004C13.7333 19.3504 15.1667 18.2504 16.3 16.6004C17.4333 14.9504 18 13.1171 18 11.1004V6.37539L12 4.12539L6 6.37539V11.1004C6 13.1171 6.56667 14.9504 7.7 16.6004C8.83333 18.2504 10.2667 19.3504 12 19.9004Z" fill="#101B3B"/></svg>
+              Proteção
+            </span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#bbb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </div>
-
-        <!-- Settings rows -->
         <div style="background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;">
           <div style="padding:15px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-2);display:flex;justify-content:space-between;align-items:center;">
             Preferências<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#bbb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3041,39 +3164,6 @@
     </div>
 
     <!-- App Tab Bar -->
-    <nav class="app-tabbar" id="appTabBar">
-      <button class="tab-btn active" onclick="goApp(2)">
-        <img src="Home-Icon.svg" width="24" height="24" alt="" aria-hidden="true" class="tab-icon-png">
-        Home
-      </button>
-      <button class="tab-btn" onclick="goApp(4)">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <mask id="mask-lupa" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#D9D9D9"/></mask>
-          <g mask="url(#mask-lupa)">
-            <path d="M19.6 21L13.3 14.7C12.8 15.1 12.225 15.4167 11.575 15.65C10.925 15.8833 10.2333 16 9.5 16C7.68333 16 6.14583 15.3708 4.8875 14.1125C3.62917 12.8542 3 11.3167 3 9.5C3 7.68333 3.62917 6.14583 4.8875 4.8875C6.14583 3.62917 7.68333 3 9.5 3C11.3167 3 12.8542 3.62917 14.1125 4.8875C15.3708 6.14583 16 7.68333 16 9.5C16 10.2333 15.8833 10.925 15.65 11.575C15.4167 12.225 15.1 12.8 14.7 13.3L21 19.6L19.6 21ZM9.5 14C10.75 14 11.8125 13.5625 12.6875 12.6875C13.5625 11.8125 14 10.75 14 9.5C14 8.25 13.5625 7.1875 12.6875 6.3125C11.8125 5.4375 10.75 5 9.5 5C8.25 5 7.1875 5.4375 6.3125 6.3125C5.4375 7.1875 5 8.25 5 9.5C5 10.75 5.4375 11.8125 6.3125 12.6875C7.1875 13.5625 8.25 14 9.5 14Z" fill="currentColor"/>
-          </g>
-        </svg>
-        Verificar
-      </button>
-      <button class="tab-btn" onclick="goApp(3)">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <mask id="mask-escudo" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#D9D9D9"/></mask>
-          <g mask="url(#mask-escudo)">
-            <path d="M11.675 21.8754C11.575 21.8587 11.475 21.8337 11.375 21.8004C9.125 21.0504 7.33333 19.6629 6 17.6379C4.66667 15.6129 4 13.4337 4 11.1004V6.37539C4 5.95872 4.12083 5.58372 4.3625 5.25039C4.60417 4.91706 4.91667 4.67539 5.3 4.52539L11.3 2.27539C11.5333 2.19206 11.7667 2.15039 12 2.15039C12.2333 2.15039 12.4667 2.19206 12.7 2.27539L18.7 4.52539C19.0833 4.67539 19.3958 4.91706 19.6375 5.25039C19.8792 5.58372 20 5.95872 20 6.37539V11.1004C20 13.4337 19.3333 15.6129 18 17.6379C16.6667 19.6629 14.875 21.0504 12.625 21.8004C12.525 21.8337 12.425 21.8587 12.325 21.8754C12.225 21.8921 12.1167 21.9004 12 21.9004C11.8833 21.9004 11.775 21.8921 11.675 21.8754ZM12 19.9004C13.7333 19.3504 15.1667 18.2504 16.3 16.6004C17.4333 14.9504 18 13.1171 18 11.1004V6.37539L12 4.12539L6 6.37539V11.1004C6 13.1171 6.56667 14.9504 7.7 16.6004C8.83333 18.2504 10.2667 19.3504 12 19.9004Z" fill="currentColor"/>
-          </g>
-        </svg>
-        Proteção
-      </button>
-      <button class="tab-btn" onclick="goApp(9)">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <mask id="mask-conta" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#D9D9D9"/></mask>
-          <g mask="url(#mask-conta)">
-            <path d="M9.175 10.825C8.39167 10.0417 8 9.1 8 8C8 6.9 8.39167 5.95833 9.175 5.175C9.95833 4.39167 10.9 4 12 4C13.1 4 14.0417 4.39167 14.825 5.175C15.6083 5.95833 16 6.9 16 8C16 9.1 15.6083 10.0417 14.825 10.825C14.0417 11.6083 13.1 12 12 12C10.9 12 9.95833 11.6083 9.175 10.825ZM4 18V17.2C4 16.6333 4.14583 16.1125 4.4375 15.6375C4.72917 15.1625 5.11667 14.8 5.6 14.55C6.63333 14.0333 7.68333 13.6458 8.75 13.3875C9.81667 13.1292 10.9 13 12 13C13.1 13 14.1833 13.1292 15.25 13.3875C16.3167 13.6458 17.3667 14.0333 18.4 14.55C18.8833 14.8 19.2708 15.1625 19.5625 15.6375C19.8542 16.1125 20 16.6333 20 17.2V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18ZM6 18H18V17.2C18 17.0167 17.9542 16.85 17.8625 16.7C17.7708 16.55 17.65 16.4333 17.5 16.35C16.6 15.9 15.6917 15.5625 14.775 15.3375C13.8583 15.1125 12.9333 15 12 15C11.0667 15 10.1417 15.1125 9.225 15.3375C8.30833 15.5625 7.4 15.9 6.5 16.35C6.35 16.4333 6.22917 16.55 6.1375 16.7C6.04583 16.85 6 17.0167 6 17.2V18ZM13.4125 9.4125C13.8042 9.02083 14 8.55 14 8C14 7.45 13.8042 6.97917 13.4125 6.5875C13.0208 6.19583 12.55 6 12 6C11.45 6 10.9792 6.19583 10.5875 6.5875C10.1958 6.97917 10 7.45 10 8C10 8.55 10.1958 9.02083 10.5875 9.4125C10.9792 9.80417 11.45 10 12 10C12.55 10 13.0208 9.80417 13.4125 9.4125Z" fill="currentColor"/>
-          </g>
-        </svg>
-        Conta
-      </button>
-    </nav>
 
   </div><!-- /phone-screen -->
 </div><!-- /phone -->
@@ -3106,11 +3196,9 @@
     next.classList.add('active');
     cur = n;
 
-    // Onboarding: show dots, hide tab bar
+    // Onboarding: show/hide dots
     const isApp = n >= ONBOARDING_SCREENS;
-    const tabBar = document.getElementById('appTabBar');
     const pdots  = document.getElementById('pdots');
-    if (tabBar) tabBar.classList.toggle('visible', isApp);
     if (pdots)  pdots.style.display = isApp ? 'none' : 'flex';
 
     // Onboarding progress dots
@@ -3122,13 +3210,6 @@
     // Trigger home demo animation on first open
     if (n === 2) setTimeout(animateHomeOpen, 100);
 
-    // Tab bar active state (12=detail stays on Verificar tab)
-    if (isApp) {
-      const tabMap = {2:0, 4:1, 5:1, 3:2, 6:0, 7:0, 9:-1};
-      const tabIdx = tabMap[n] ?? -1;
-      document.querySelectorAll('.tab-btn').forEach((b, i) =>
-        b.classList.toggle('active', i === tabIdx));
-    }
   }
 
   /* ── App tab switching ── */

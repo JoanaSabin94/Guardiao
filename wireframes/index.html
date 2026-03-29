@@ -1485,7 +1485,7 @@
       cursor: pointer; font-family: inherit;
     }
     .prot-card.paused { background: #888; }
-    .prot-card.paused .prot-card-status::after { content: ' (em pausa)'; font-size: 14px; font-weight: 400; opacity: .7; }
+    .prot-card.paused .prot-card-shield { opacity: .35; filter: grayscale(1); }
 
     /* ── Progress dots at bottom ── */
     .proto-dots {
@@ -1895,8 +1895,9 @@
             <path d="M24 37l9 9 15-15" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <div class="prot-card-info">
-            <div class="prot-card-status">Proteção ativa</div>
-            <div class="prot-card-services">Pode usar o telemóvel com tranquilidade.<br>Tratamos nós do resto.</div>
+            <div class="prot-card-status" id="homeProtStatus">Proteção ativa</div>
+            <div class="prot-card-services" id="homeProtServices">Pode usar o telemóvel com tranquilidade.<br>Tratamos nós do resto.</div>
+            <button id="homeProtResumeBtn" onclick="resumeProtection()" style="display:none;margin-top:12px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:20px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.01em;">Reativar agora</button>
           </div>
         </div>
 
@@ -1961,6 +1962,30 @@
       </div>
 
       <div class="app-scroll" style="padding:0 0 90px; overflow-y:auto;">
+
+        <!-- Pause card -->
+        <div class="pause-card" style="margin-bottom:16px;">
+          <div class="pause-card-header">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <circle cx="7.5" cy="7.5" r="6.5" stroke="#555" stroke-width="1.4"/>
+              <path d="M5.5 4.5v6M9.5 4.5v6" stroke="#555" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <div class="pause-card-title">Pausa temporária</div>
+          </div>
+          <p class="pause-card-desc">Desliga temporariamente a proteção. A app reativa automaticamente quando o tempo terminar.</p>
+          <div id="pauseDefault">
+            <button class="pause-btn" onclick="showSheet('pause-pick')">Pausar proteção</button>
+          </div>
+          <div id="pauseActive" style="display:none;">
+            <div class="pause-countdown">
+              <div>
+                <div class="pause-timer-label">Proteção reativa em</div>
+                <div class="pause-timer-value" id="pauseDisplay">2h 00min</div>
+              </div>
+              <button class="pause-resume-btn" onclick="resumeProtection()">Reativar agora</button>
+            </div>
+          </div>
+        </div>
 
         <!-- Toggles section -->
         <div class="tools-list" style="margin-bottom:16px;">
@@ -2052,6 +2077,32 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- Duration picker sheet -->
+      <div class="overlay" id="ov-pause-pick"></div>
+      <div class="pause-sheet" id="sh-pause-pick">
+        <div class="os-handle"></div>
+        <div class="pause-sheet-title">Por quanto tempo?</div>
+        <div class="pause-options">
+          <button class="pause-option" onclick="pauseProtection(120)">
+            2 horas
+            <span class="pause-option-sub">sessenta minutos</span>
+          </button>
+          <button class="pause-option" onclick="pauseProtection(1440)">
+            24 horas
+            <span class="pause-option-sub">um dia completo</span>
+          </button>
+          <button class="pause-option" onclick="pauseProtection(4320)">
+            72 horas
+            <span class="pause-option-sub">três dias</span>
+          </button>
+          <button class="pause-option" onclick="pauseProtection(-1)">
+            Indeterminado
+            <span class="pause-option-sub">até reativar manualmente</span>
+          </button>
+        </div>
+        <button class="pause-cancel" onclick="hideSheet('pause-pick')">Cancelar</button>
       </div>
     </div>
 
@@ -2244,7 +2295,7 @@
           <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.07em;margin-bottom:10px;">MOTIVO DO BLOQUEIO</div>
           <div style="background:var(--surface-2);border:1.5px solid rgba(0,0,0,.07);border-radius:14px;padding:14px 16px;">
             <div style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:6px;">Número reportado como suspeito</div>
-            <div style="font-size:12px;color:var(--text-3);line-height:1.55;">Identificado por <strong>247 utilizadores</strong> como número de burla. Padrão de chamadas em massa detetado a partir deste número.</div>
+            <div style="font-size:12px;color:var(--text-3);line-height:1.55;">Este número apresenta características associadas a chamadas fraudulentas. Recomendamos que não atenda nem devolva a chamada.</div>
           </div>
         </div>
 
@@ -2257,7 +2308,7 @@
 
         <!-- Actions -->
         <div style="padding:0 20px 100px;display:flex;flex-direction:column;gap:10px;">
-          <button class="btn-blue">Denunciar este número</button>
+          <button class="btn-blue">Bloquear este número</button>
           <button class="btn-link" style="font-size:13px;color:var(--text-3);">Ligar na mesma</button>
         </div>
       </div>
@@ -2324,11 +2375,6 @@
           </div>
         </div>
 
-        <!-- Actions -->
-        <div style="padding:0 20px 100px;display:flex;flex-direction:column;gap:10px;">
-          <button class="btn-blue">Denunciar como fraude</button>
-          <button class="btn-link" style="font-size:13px;color:var(--text-3);">Marcar como segura</button>
-        </div>
       </div>
     </div>
 
@@ -2367,30 +2413,6 @@
           </div>
         </div>
 
-        <!-- Pause protection card -->
-        <div class="pause-card">
-          <div class="pause-card-header">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-              <circle cx="7.5" cy="7.5" r="6.5" stroke="#555" stroke-width="1.4"/>
-              <path d="M7.5 4v3.5l2.5 2" stroke="#555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <div class="pause-card-title">Pausa temporária</div>
-          </div>
-          <p class="pause-card-desc">Desliga a proteção por um período. A app reativa automaticamente quando o tempo terminar.</p>
-          <div id="pauseDefault">
-            <button class="pause-btn" onclick="showSheet('pause-pick')">Pausar proteção</button>
-          </div>
-          <div id="pauseActive" style="display:none;">
-            <div class="pause-countdown">
-              <div>
-                <div class="pause-timer-label">Proteção reativa em</div>
-                <div class="pause-timer-value" id="pauseDisplay">30:00</div>
-              </div>
-              <button class="pause-resume-btn" onclick="resumeProtection()">Reativar agora</button>
-            </div>
-          </div>
-        </div>
-
         <!-- Settings rows -->
         <div style="background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;">
           <div style="padding:15px 16px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-2);display:flex;justify-content:space-between;align-items:center;">
@@ -2406,31 +2428,6 @@
 
       </div>
 
-      <!-- Duration picker sheet -->
-      <div class="overlay" id="ov-pause-pick"></div>
-      <div class="pause-sheet" id="sh-pause-pick">
-        <div class="os-handle"></div>
-        <div class="pause-sheet-title">Por quanto tempo?</div>
-        <div class="pause-options">
-          <button class="pause-option" onclick="pauseProtection(15)">
-            15 min
-            <span class="pause-option-sub">até às próximas ligações</span>
-          </button>
-          <button class="pause-option" onclick="pauseProtection(30)">
-            30 min
-            <span class="pause-option-sub">meia hora</span>
-          </button>
-          <button class="pause-option" onclick="pauseProtection(60)">
-            1 hora
-            <span class="pause-option-sub">sessenta minutos</span>
-          </button>
-          <button class="pause-option" onclick="pauseProtection(120)">
-            2 horas
-            <span class="pause-option-sub">cento e vinte minutos</span>
-          </button>
-        </div>
-        <button class="pause-cancel" onclick="hideSheet('pause-pick')">Cancelar</button>
-      </div>
     </div>
 
     <!-- App Tab Bar -->
@@ -2659,32 +2656,70 @@
   /* ── Pause protection ── */
   let pauseTimer = null;
   let pauseEndTime = null;
+  let pauseIndefinite = false;
+
+  function formatPauseRemaining(ms) {
+    const totalMins = Math.ceil(ms / 60000);
+    if (totalMins >= 60) {
+      const h = Math.floor(totalMins / 60);
+      const m = totalMins % 60;
+      return m > 0 ? h + 'h ' + String(m).padStart(2,'0') + 'min' : h + 'h';
+    }
+    return totalMins + 'min';
+  }
 
   function pauseProtection(minutes) {
     hideSheet('pause-pick');
-    pauseEndTime = Date.now() + minutes * 60 * 1000;
+    pauseIndefinite = minutes === -1;
+    pauseEndTime = pauseIndefinite ? null : Date.now() + minutes * 60 * 1000;
+
+    // Protect screen state
     document.getElementById('pauseDefault').style.display = 'none';
     document.getElementById('pauseActive').style.display = 'block';
+    const dispEl = document.getElementById('pauseDisplay');
+    if (dispEl) dispEl.textContent = pauseIndefinite ? '∞' : formatPauseRemaining(minutes * 60 * 1000);
+
+    // Home prot-card
     document.querySelector('.prot-card')?.classList.add('paused');
-    updatePauseDisplay();
-    pauseTimer = setInterval(updatePauseDisplay, 1000);
+    const statusEl = document.getElementById('homeProtStatus');
+    const servicesEl = document.getElementById('homeProtServices');
+    const resumeBtn = document.getElementById('homeProtResumeBtn');
+    if (statusEl) statusEl.textContent = 'Proteção em pausa';
+    if (servicesEl) servicesEl.textContent = pauseIndefinite
+      ? 'Pausa indefinida — reative quando quiser.'
+      : 'A proteção reativa automaticamente.';
+    if (resumeBtn) resumeBtn.style.display = 'inline-block';
+
+    if (!pauseIndefinite) {
+      pauseTimer = setInterval(updatePauseDisplay, 60000);
+    }
   }
 
   function updatePauseDisplay() {
+    if (pauseIndefinite || !pauseEndTime) return;
     const remaining = Math.max(0, pauseEndTime - Date.now());
-    const mins = Math.floor(remaining / 60000);
-    const secs = Math.floor((remaining % 60000) / 1000);
     const el = document.getElementById('pauseDisplay');
-    if (el) el.textContent = String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0');
+    if (el) el.textContent = formatPauseRemaining(remaining);
     if (remaining <= 0) resumeProtection();
   }
 
   function resumeProtection() {
     if (pauseTimer) { clearInterval(pauseTimer); pauseTimer = null; }
     pauseEndTime = null;
+    pauseIndefinite = false;
+
+    // Protect screen state
     document.getElementById('pauseDefault').style.display = 'block';
     document.getElementById('pauseActive').style.display = 'none';
+
+    // Restore home prot-card
     document.querySelector('.prot-card')?.classList.remove('paused');
+    const statusEl = document.getElementById('homeProtStatus');
+    const servicesEl = document.getElementById('homeProtServices');
+    const resumeBtn = document.getElementById('homeProtResumeBtn');
+    if (statusEl) statusEl.textContent = 'Proteção ativa';
+    if (servicesEl) servicesEl.innerHTML = 'Pode usar o telemóvel com tranquilidade.<br>Tratamos nós do resto.';
+    if (resumeBtn) resumeBtn.style.display = 'none';
   }
 
   function viewNumber(num, isSuspicious) {
